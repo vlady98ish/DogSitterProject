@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_Primary"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".activity.DogRegistration">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Dog Registration"
+            android:textColor="@color/color_text"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:gravity="bottom"
+            android:layout_marginBottom="20dp"
+            />
+
+    </LinearLayout>
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/dogReg_IMG_profileImage"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_gravity="center"
+        android:src="@drawable/img_user_profile"
+        android:layout_marginBottom="20dp"
+        />
+
+    <!--        FULL NAME-->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/TextInputLayoutStyle"
+        app:boxStrokeColor="@color/color_text"
+        app:hintTextAppearance="@color/colorPrimary"
+        app:helperTextEnabled="true"
+        android:textColorHint="@color/color_text"
+        android:textSize="22sp"
+        android:layout_marginVertical="8dp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dogReg_IN_Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:textColor="@color/color_text"
+            android:inputType="textPersonName"
+            android:hint="Enter name" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
+
+
+
+    <!--        CITY-->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/TextInputLayoutStyle"
+        app:boxStrokeColor="@color/color_text"
+        app:hintTextAppearance="@color/colorPrimary"
+        app:helperTextEnabled="true"
+        android:textColorHint="@color/color_text"
+        android:textSize="22sp"
+        android:layout_marginVertical="8dp"
+        >
+
+
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dogReg_IN_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:hint="Enter gender"
+            android:inputType="text"
+            android:textColor="@color/color_text"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+    <!--        Phone Number-->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/TextInputLayoutStyle"
+        app:boxStrokeColor="@color/color_text"
+        app:hintTextAppearance="@color/colorPrimary"
+        app:helperTextEnabled="true"
+        android:textColorHint="@color/color_text"
+        android:textSize="22sp"
+        android:layout_marginVertical="8dp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dogReg_IN_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:hint="Enter age"
+
+            android:inputType="numberDecimal"
+            android:textColor="@color/color_text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
+    <!--        E-mail-->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/TextInputLayoutStyle"
+        app:boxStrokeColor="@color/color_text"
+        app:hintTextAppearance="@color/colorPrimary"
+        app:helperTextEnabled="true"
+        android:textColorHint="@color/color_text"
+        android:textSize="22sp"
+        android:layout_marginVertical="8dp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dogReg_IN_breed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:hint="Enter Breed"
+
+            android:inputType="text"
+            android:textColor="@color/color_text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <!--        Password-->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/TextInputLayoutStyle"
+        app:boxStrokeColor="@color/color_text"
+        app:hintTextAppearance="@color/colorPrimary"
+        app:helperTextEnabled="true"
+        android:textColorHint="@color/color_text"
+        android:textSize="22sp"
+        android:layout_marginVertical="8dp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dogReg_IN_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:hint="Enter weight"
+            android:inputType="numberDecimal"
+            android:textColor="@color/color_text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
+    <!--        ADD MAP -->
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/dogReg_BTN_signUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_background"
+        android:text="Sign Up"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:textSize="20sp" />
+
+
+
+
+
+
+
+</LinearLayout>

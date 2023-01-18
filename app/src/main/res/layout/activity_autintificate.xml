@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_Primary"
+    android:orientation="vertical"
+    tools:context=".activity.AutintificateActivity"
+    android:paddingHorizontal="16dp"
+    >
+
+
+
+
+
+
+
+        <ImageView
+            android:id="@+id/autintificate_IMG_logo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="72dp"
+            android:src="@drawable/img_paw" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="left"
+            android:text="Sign in"
+            android:textColor="@color/color_text"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#000"
+                android:textSize="22sp"
+                android:theme="@style/TextInputLayoutStyle"
+                app:boxStrokeColor="#000"
+
+
+                app:helperTextEnabled="true"
+                app:hintTextAppearance="@color/colorPrimary"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/autintificate_IN_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_mail"
+
+                    android:drawablePadding="10dp"
+
+
+                    android:hint="Enter email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#000"
+
+                    android:layout_marginBottom="16dp"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#000"
+                android:textSize="22sp"
+                android:theme="@style/TextInputLayoutStyle"
+                app:boxStrokeColor="#000"
+
+
+                app:helperTextEnabled="true"
+                app:hintTextAppearance="@color/colorPrimary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/autintificate_IN_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_password"
+                    android:drawablePadding="10dp"
+                    android:hint="Enter password"
+
+                    android:inputType="textPassword"
+                    android:textColor="#000" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/autintificate_LBL_forgotPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="Forgot password"
+                android:textColor="@color/color_secondary"
+                android:textStyle="bold"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/autintificate_BTN_loginBTN"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_background"
+                android:text="Sign in"
+                android:textAllCaps="false"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+
+
+            <TextView
+                android:id="@+id/autintificate_LBL_backBTN"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:text="Don't have any account? Sign up"
+                android:textColor="@color/color_secondary"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+
+
+</LinearLayout>

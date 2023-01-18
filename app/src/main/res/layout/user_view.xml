@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="32dp"
+    android:layout_marginBottom="16dp">
+
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/user_view_IMG_photo"
+        android:layout_width="match_parent"
+        android:layout_height="373dp"
+        android:src="@drawable/smile_sitter"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="8dp"
+        app:riv_corner_radius="8dip"
+        />
+
+
+    <TextView
+        android:id="@+id/user_view_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kate Frehin"
+        android:layout_below="@+id/user_view_IMG_photo"
+        android:textColor="@color/color_text"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        />
+
+    <TextView
+        android:id="@+id/user_view_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tel Aviv, Israel"
+        android:layout_below="@+id/user_view_name"
+        android:textColor="@color/color_text"
+        android:textSize="14dp"
+        />
+
+    <TextView
+        android:id="@+id/user_view_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Available: 08:00 - 16:00"
+        android:layout_below="@+id/user_view_city"
+        android:textColor="@color/color_text"
+        android:textSize="14dp"
+        />
+
+    <TextView
+        android:id="@+id/user_view_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/salary"
+        android:layout_below="@+id/user_view_time"
+        android:textColor="@color/color_text"
+        android:textSize="14dp"
+        />
+
+
+
+
+</RelativeLayout>

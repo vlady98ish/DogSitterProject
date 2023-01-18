@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">DogSitterProject</string>
+
+    <string name="splash_title_name">Woof!</string>
+    <string name="splash_slogan_name">Your pet is safe with us</string>
+
+
+    <string name="signUp_hello">Welcome to Woof!</string>
+    <string name="signUp_describe">What is best describe you?</string>
+    <string name="signUp_dogSitter_register">Sitter</string>
+    <string name="signUp_dogOwner_register">Owner</string>
+    <string name="signUp_already_register">Already registered? Sign in</string>
+
+
+    <string name="dogSitter_register_title">Dog Sitter Registration</string>
+    <string name="dogOwner_register_title">Dog Sitter Registration</string>
+    <string name="register_signup">Sign up to continue</string>
+
+
+    <string name="registration">Registration</string>
+
+
+    <!--    NAVIGATION-->
+
+
+    <string name="nav_open">Open navigation</string>
+    <string name="nav_close">Close navigation</string>
+
+
+    <string name="salary"><b>50₪</b>/hour</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+
+</resources>

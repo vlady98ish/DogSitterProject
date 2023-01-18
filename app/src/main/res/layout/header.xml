@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="64dp"
+    >
+
+
+    <TextView
+        android:id="@+id/navigation_LBL_name"
+        android:text="Vladyslav Ishchenko"
+        android:textColor="@color/color_text"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/navigation_LBL_city"
+        android:text="Tel Aviv"
+        android:textColor="@color/color_text"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/navigation_LBL_phone"
+        android:text="058-5266174"
+        android:textColor="@color/color_text"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/navigation_LBL_email"
+        android:text="jokernaale@gmail.com"
+        android:textColor="@color/color_text"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorHR"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/navigation_LYT_dog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:paddingBottom="10dp"
+        >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/navigation_IMG_dog"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_user_profile"
+        />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/navigation_LBL_dogName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Maritn"
+                android:textColor="@color/color_text"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/navigation_LBL_dogType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chihuahua"
+                android:textColor="@color/color_text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/navigation_LBL_dogYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2 Years old"
+                android:textColor="@color/color_text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/navigation_LBL_dogWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3.4 kg"
+                android:textColor="@color/color_text"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <View
+        android:id="@+id/navigation_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorHR"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        />
+
+
+</LinearLayout>
