@@ -10,16 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
+
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -28,13 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.bumptech.glide.Glide;
+
 import com.example.dogsitterproject.R;
 import com.example.dogsitterproject.adapter.DogAdapter;
 import com.example.dogsitterproject.adapter.UserAdapter;
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.DogSitter;
-import com.example.dogsitterproject.model.User;
+
 import com.example.dogsitterproject.utils.ImageUtils;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,11 +45,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.makeramen.roundedimageview.RoundedImageView;
+
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -98,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         updateRecycle();
 
         init();
+
+
     }
 
 
@@ -166,8 +170,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 String dog_weight = dog.getWeight();
                                 dogWeight.setText(dog_weight + " Kg");
                                 String photoLink = dog.getDogpictureurl();
-                                Log.d("ptttt",photoLink);
-                                ImageUtils.getInstance().load(photoLink,navigation_IMG_dog);
+                                Log.d("ptttt", photoLink);
+                                ImageUtils.getInstance().load(photoLink, navigation_IMG_dog);
 
                             }
 
@@ -319,6 +323,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Toast.makeText(MainActivity.this, "No users", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
@@ -331,12 +336,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.menu_logOut:
-                Intent intent = new Intent(MainActivity.this, AutintificateActivity.class);
+                intent = new Intent(MainActivity.this, AutintificateActivity.class);
                 startActivity(intent);
                 FirebaseAuth.getInstance().signOut();
                 finish();
+                break;
+
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

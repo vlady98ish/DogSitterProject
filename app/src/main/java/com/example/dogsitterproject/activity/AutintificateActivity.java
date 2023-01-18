@@ -142,7 +142,7 @@ public class AutintificateActivity extends AppCompatActivity {
                 });
     }
 
-    private void resetPassword(View v){
+    private void resetPassword(View v) {
         EditText resetMail = new EditText(v.getContext());
         AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
         passwordResetDialog.setTitle("Reset Password?");
@@ -183,6 +183,7 @@ public class AutintificateActivity extends AppCompatActivity {
         });
         passwordResetDialog.create().show();
     }
+
     @Override
     protected void onStart() {
         super.onStart();

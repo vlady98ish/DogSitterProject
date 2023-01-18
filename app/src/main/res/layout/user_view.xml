@@ -46,8 +46,10 @@
         android:layout_height="wrap_content"
         android:text="Available: 08:00 - 16:00"
         android:layout_below="@+id/user_view_city"
+
         android:textColor="@color/color_text"
         android:textSize="14dp"
+
         />
 
     <TextView
@@ -58,6 +60,26 @@
         android:layout_below="@+id/user_view_time"
         android:textColor="@color/color_text"
         android:textSize="14dp"
+        />
+
+    <ImageButton
+        android:id="@+id/user_view_BTN_fav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_favorite_border"
+        android:layout_alignParentEnd="true"
+        android:background="@color/fui_transparent"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/user_view_BTN_chat"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/user_view_IMG_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Call"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/button_background"
         />
 
 

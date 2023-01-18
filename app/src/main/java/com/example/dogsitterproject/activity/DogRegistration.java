@@ -311,8 +311,8 @@ public class DogRegistration extends AppCompatActivity {
                                     ganderEdited,
                                     ageEdited,
                                     breedEdited,
-                                    weightEdited, ""
-                            );
+                                    weightEdited, "",
+                            user.getPhone());
                             dogReference = dogReference
                                     .child(currentUserId);
                             dogReference

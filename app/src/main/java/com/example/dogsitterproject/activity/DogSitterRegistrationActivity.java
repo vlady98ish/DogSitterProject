@@ -1,10 +1,10 @@
 package com.example.dogsitterproject.activity;
 
-import static com.example.dogsitterproject.utils.ConstUtils.DOG_PIC_URL;
+
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
 import static com.example.dogsitterproject.utils.ConstUtils.IMG_FAILED;
 import static com.example.dogsitterproject.utils.ConstUtils.IMG_UPLOADED;
-import static com.example.dogsitterproject.utils.ConstUtils.KEY_USER;
+
 import static com.example.dogsitterproject.utils.ConstUtils.PICK_IMAGE_REQUEST;
 import static com.example.dogsitterproject.utils.ConstUtils.PROFILE_IMAGES;
 import static com.example.dogsitterproject.utils.ConstUtils.PROFILE_PIC_URL;
@@ -27,13 +27,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 
-import android.graphics.Bitmap;
+
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.provider.MediaStore;
+
 import android.text.TextUtils;
-import android.util.Log;
+
 
 import android.widget.Button;
 
@@ -58,8 +58,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -124,7 +123,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
 
         profileImage.setOnClickListener(view -> getImage());
 
-        //TODO: Refactor all if
+
         regButton.setOnClickListener(view -> getForms());
 
     }
@@ -186,7 +185,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
             loader.setCanceledOnTouchOutside(false);
             loader.show();
 
-            saveData(fullNameEdited,cityEdited,emailEdited,phoneEdited,passEdited,salaryEdited);
+            saveData(fullNameEdited, cityEdited, emailEdited, phoneEdited, passEdited, salaryEdited);
         }
     }
 
@@ -254,7 +253,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
                           String emailEdited,
                           String phoneEdited,
                           String passEdited,
-                          String salaryEdited){
+                          String salaryEdited) {
 
         mAuth
                 .createUserWithEmailAndPassword(emailEdited, passEdited)

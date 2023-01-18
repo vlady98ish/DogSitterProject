@@ -7,11 +7,11 @@ import static com.example.dogsitterproject.utils.ConstUtils.KEY_USER;
 import static com.example.dogsitterproject.utils.ConstUtils.LENGTH_PASSWORD;
 import static com.example.dogsitterproject.utils.ConstUtils.PASSWORD_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.PHONE_REQUIRED;
-import static com.example.dogsitterproject.utils.ConstUtils.REGISTERING_LOADER;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
+
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -41,9 +41,6 @@ public class DogOwnerRegistrationActivity extends AppCompatActivity {
     private Button continueButton;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +62,6 @@ public class DogOwnerRegistrationActivity extends AppCompatActivity {
         continueButton = findViewById(R.id.dogOwnerReg_BTN_continue);
 
 
-
     }
 
 
@@ -75,7 +71,6 @@ public class DogOwnerRegistrationActivity extends AppCompatActivity {
             startActivity(intent);
 
         });
-
 
 
         continueButton.setOnClickListener(view -> getForms());
@@ -130,17 +125,14 @@ public class DogOwnerRegistrationActivity extends AppCompatActivity {
         } else {
 
 
-
-
-            User user = new User(fullNameEdited,  cityEdited, emailEdited, phoneEdited, passEdited);
+            User user = new User(fullNameEdited, cityEdited, emailEdited, phoneEdited, passEdited);
             changeActivity(user);
-
 
 
         }
     }
 
-    private void changeActivity(User user){
+    private void changeActivity(User user) {
         Intent intent = new Intent(DogOwnerRegistrationActivity.this, DogRegistration.class);
         intent.putExtra(KEY_USER, user);
         startActivity(intent);
