@@ -2,7 +2,7 @@ package com.example.dogsitterproject.activity;
 
 import static com.example.dogsitterproject.utils.ConstUtils.DOGS_DATA;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
-import static com.example.dogsitterproject.utils.ConstUtils.DOG_PIC_URL;
+
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
 
@@ -13,8 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentTransaction;
 
 
 import android.content.Intent;
@@ -25,15 +24,16 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import android.widget.TextView;
 
 
 import com.example.dogsitterproject.R;
-import com.example.dogsitterproject.adapter.DogAdapter;
-import com.example.dogsitterproject.adapter.UserAdapter;
+
+import com.example.dogsitterproject.calback.CallBackFavClicked;
+
+import com.example.dogsitterproject.fragments.FavoriteFragment;
+import com.example.dogsitterproject.fragments.HomeFragment;
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.DogSitter;
 
@@ -47,10 +47,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -61,15 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private NavigationView navigationView;
 
-
-    private RecyclerView recyclerView;
-    private ProgressBar progressBar;
-
-
-    private List<DogSitter> userList;
-    private List<Dog> dogList;
-    private UserAdapter userAdapter;
-    private DogAdapter dogAdapter;
 
     private LinearLayout navigation_LYT_dog;
 
@@ -84,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String typeUser = "";
 
 
+    private HomeFragment homeFragment;
+    private FavoriteFragment favoriteFragment;
+
     private CircleImageView navigation_IMG_dog;
 
     private DatabaseReference reference;
@@ -94,16 +84,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initFragment();
+
         findViews();
-        initLayerManager();
+
         updateInfo();
         updateRecycle();
 
-        init();
+        initNav();
 
 
     }
 
+
+    private void initFragment() {
+        homeFragment = new HomeFragment();
+        favoriteFragment = new FavoriteFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_fragment, homeFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
 
     private void findViews() {
         drawerLayout = findViewById(R.id.main_drawerLayout);
@@ -111,8 +112,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.main_NAV_view);
         setSupportActionBar(toolbar);
 
-        progressBar = findViewById(R.id.main_BAR_progress);
-        recyclerView = findViewById(R.id.main_recycleView);
 
         userName = navigationView.getHeaderView(0).findViewById(R.id.navigation_LBL_name);
         userCity = navigationView.getHeaderView(0).findViewById(R.id.navigation_LBL_city);
@@ -131,7 +130,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void init() {
+    private void initNav() {
+        navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -203,12 +203,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        userList = new ArrayList<>();
-        dogList = new ArrayList<>();
-        userAdapter = new UserAdapter(MainActivity.this, userList);
-        dogAdapter = new DogAdapter(MainActivity.this, dogList);
-
-
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -216,14 +210,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 if (type.equals(DOG_SITTER)) {
                     renderUiDog();
-                    recyclerView.setAdapter(dogAdapter);
-                    readDogs();
+
 
                 }
 
                 if (type.equals(DOG_OWNER)) {
-                    recyclerView.setAdapter(userAdapter);
-                    readUsers();
+
+
                 }
             }
 
@@ -250,87 +243,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void initLayerManager() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
-        recyclerView.setLayoutManager(layoutManager);
-    }
-
 
     private void renderUiDog() {
         navigation_LYT_dog.setVisibility(View.GONE);
         line.setVisibility(View.GONE);
-    }
-
-
-    private void readDogs() {
-        DatabaseReference reference_dog = FirebaseDatabase
-                .getInstance()
-                .getReference()
-                .child(DOGS_DATA);
-
-        reference_dog.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dogList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Dog dog = dataSnapshot.getValue(Dog.class);
-                    Object photo = dataSnapshot.child(DOG_PIC_URL).getValue();
-                    if (photo != null) {
-                        dog.setDogpictureurl(photo.toString());
-                    }
-                    dogList.add(dog);
-                }
-                dogAdapter.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
-                if (dogList.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "No users", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void readUsers() {
-        DatabaseReference reference = FirebaseDatabase
-                .getInstance()
-                .getReference()
-                .child(USER_DATA);
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    if (dataSnapshot.child("type").getValue().toString().equals(DOG_SITTER)) {
-                        DogSitter user = dataSnapshot.getValue(DogSitter.class);
-                        Object photo = dataSnapshot.child("profilepictureurl").getValue();
-                        if (photo != null) {
-                            user.setProfilepictureurl(photo.toString());
-                        }
-                        userList.add(user);
-                    }
-                }
-                userAdapter.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
-                if (userList.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "No users", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
 
@@ -344,6 +260,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 FirebaseAuth.getInstance().signOut();
                 finish();
                 break;
+            case R.id.menu_favourite:
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, favoriteFragment).commit();
+                break;
+            case R.id.menu_home:
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, homeFragment).commit();
+
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -351,5 +273,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
+
 
 }

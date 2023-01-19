@@ -25,7 +25,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     private Animation downAnimation;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +38,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         runSplash();
     }
 
-    private void findViews(){
+    private void findViews() {
         splash_logo = findViewById(R.id.splash_logo);
         splash_title = findViewById(R.id.splash_title);
         splash_slogan = findViewById(R.id.splash_slogan);
@@ -47,20 +46,20 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     }
 
-    private void loadAnimations(){
+    private void loadAnimations() {
         upAnimation = AnimationUtils
                 .loadAnimation(this, R.anim.screen_animation);
         downAnimation = AnimationUtils
                 .loadAnimation(this, R.anim.down_animation);
     }
 
-    private void setAnimations(){
+    private void setAnimations() {
         splash_logo.setAnimation(upAnimation);
         splash_title.setAnimation(downAnimation);
         splash_slogan.setAnimation(downAnimation);
     }
 
-    private void runSplash(){
+    private void runSplash() {
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(
                     SplashScreenActivity.this, AutintificateActivity.class
@@ -69,7 +68,8 @@ public class SplashScreenActivity extends AppCompatActivity {
             finish();
         }, SPLASH_SCREEN);
     }
-    private void setFullScreen(){
+
+    private void setFullScreen() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }

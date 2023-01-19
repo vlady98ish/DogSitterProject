@@ -80,7 +80,6 @@ public class DogRegistration extends AppCompatActivity {
     private Button regButton;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -263,7 +262,7 @@ public class DogRegistration extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         String currentUserId = mAuth.getCurrentUser().getUid();
-
+                        user.setId(currentUserId);
                         if (!task.isSuccessful()) {
                             String error = task.getException().toString();
                             //TODO: Toast to class
@@ -308,11 +307,12 @@ public class DogRegistration extends AppCompatActivity {
                                         }
                                     });
                             Dog dog = new Dog(nameEdited,
+                                    currentUserId,
                                     ganderEdited,
                                     ageEdited,
                                     breedEdited,
                                     weightEdited, "",
-                            user.getPhone());
+                                    user.getPhone());
                             dogReference = dogReference
                                     .child(currentUserId);
                             dogReference

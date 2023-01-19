@@ -1,15 +1,16 @@
 package com.example.dogsitterproject.model;
 
-public class DogSitter extends User{
+public class DogSitter extends User {
 
-    public DogSitter(){}
+    public DogSitter() {
+    }
 
     private String salary;
     private String available;
     private String profilepictureurl;
 
-    public DogSitter(String fullName,String city,String email,String phone,String password,String salary,String available, String profilepictureurl){
-        super(fullName,city,email,phone,password);
+    public DogSitter(String fullName, String id, String city, String email, String phone, String password, String salary, String available, String profilepictureurl) {
+        super(fullName, id, city, email, phone, password);
         this.salary = salary;
         this.available = available;
         this.profilepictureurl = profilepictureurl;

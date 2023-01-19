@@ -278,7 +278,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
                             Map newTypeMap = new HashMap();
                             newTypeMap.put("type", DOG_SITTER);
                             DogSitter user = new DogSitter(fullNameEdited,
-
+                                    currentUserId,
                                     cityEdited,
                                     emailEdited,
                                     phoneEdited,

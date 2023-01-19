@@ -4,6 +4,7 @@ import android.app.Application;
 
 
 import com.example.dogsitterproject.utils.ImageUtils;
+import com.example.dogsitterproject.utils.PermissionUtils;
 
 
 public class MyApp extends Application {
@@ -11,8 +12,7 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         ImageUtils.initHelper(this);
-
-
+        PermissionUtils.initHelper(this);
 
 
     }

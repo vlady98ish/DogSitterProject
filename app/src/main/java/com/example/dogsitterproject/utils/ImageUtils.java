@@ -1,8 +1,7 @@
 package com.example.dogsitterproject.utils;
 
-
-
 import android.content.Context;
+
 
 import android.widget.ImageView;
 
@@ -30,7 +29,6 @@ public class ImageUtils {
     }
 
 
-
     public void load(String link, ImageView imageView) {
         Glide
                 .with(appContext)
@@ -45,5 +43,9 @@ public class ImageUtils {
                 .load(drawable)
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(imageView);
+
+
     }
+
+
 }

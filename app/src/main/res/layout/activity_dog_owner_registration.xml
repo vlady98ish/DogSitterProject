@@ -165,6 +165,7 @@
         android:textColorHint="@color/color_text"
         android:textSize="22sp"
         android:layout_marginVertical="8dp"
+
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -180,21 +181,7 @@
 
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/TextInputLayoutStyle"
-        app:boxStrokeColor="@color/color_text"
-        app:hintTextAppearance="@color/colorPrimary"
-        app:helperTextEnabled="true"
-        android:textColorHint="@color/color_text"
-        android:textSize="22sp"
-        android:layout_marginVertical="8dp"
-        >
 
-
-    </com.google.android.material.textfield.TextInputLayout>
 
 
     <!--        ADD MAP -->
@@ -204,12 +191,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="275dp"
         android:background="@drawable/button_background"
         android:text="Continue"
         android:textAllCaps="false"
         android:textColor="#fff"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+
+        />
 
 
     <TextView

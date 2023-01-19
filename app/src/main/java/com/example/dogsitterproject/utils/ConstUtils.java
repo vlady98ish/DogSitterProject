@@ -19,9 +19,7 @@ public class ConstUtils {
     public static final String IMG_FAILED = "Image Failed";
 
 
-
     public static final String KEY_USER = "KEY_USER";
-
 
 
     //FIREBASE
@@ -31,6 +29,8 @@ public class ConstUtils {
     public static final String DOG_PIC_URL = "dogpictureurl";
     public static final String PROFILE_PIC_URL = "profilepictureurl";
     public static final String PROFILE_IMAGES = "profile images";
+    public static final String FAVORITE_DATA = "favorite";
+
 
     public static final int PICK_IMAGE_REQUEST = 100;
 
@@ -39,9 +39,6 @@ public class ConstUtils {
     public static final String DOG_SITTER = "dogSitter";
 
     public static final int SPLASH_SCREEN = 4300;
-
-
-
 
 
 }

@@ -4,23 +4,32 @@ package com.example.dogsitterproject.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private String fullName,id,email,phone,password,city;
+    private String fullName, id, email, phone, password, city;
 
 
-    public User(){}
+    public User() {
+    }
 
-    public User(String fullName,String city,String email,String phone,String password){
+    public User(String fullName, String id, String city, String email, String phone, String password) {
         this.fullName = fullName;
 
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.city=city;
+        this.city = city;
+        this.id = id;
 
 
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public User setId(String id) {
+        this.id = id;
+        return this;
+    }
 
     public String getFullName() {
         return fullName;
@@ -30,7 +39,6 @@ public class User implements Serializable {
         this.fullName = fullName;
         return this;
     }
-
 
 
     public String getEmail() {

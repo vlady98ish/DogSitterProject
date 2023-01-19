@@ -108,6 +108,7 @@
                 android:text="Forgot password"
                 android:textColor="@color/color_secondary"
                 android:textStyle="bold"
+                android:layout_marginBottom="350dp"
                 />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -120,6 +121,7 @@
                 android:text="Sign in"
                 android:textAllCaps="false"
                 android:textColor="#fff"
+
                 android:textSize="20sp" />
 
 

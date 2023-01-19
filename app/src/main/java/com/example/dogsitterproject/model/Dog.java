@@ -9,21 +9,32 @@ public class Dog {
     private String weight;
     private String dogpictureurl;
     private String phone;
+    private String idUser;
 
 
+    public Dog() {
+    }
 
-    public Dog(){}
-
-    public Dog(String name, String gender, String age, String breed, String weight, String dogpictureurl,String phone) {
+    public Dog(String name, String idUser, String gender, String age, String breed, String weight, String dogpictureurl, String phone) {
         this.name = name;
         this.gender = gender;
         this.age = age;
         this.breed = breed;
         this.weight = weight;
         this.dogpictureurl = dogpictureurl;
-        this.phone =phone;
+        this.phone = phone;
+        this.idUser = idUser;
     }
 
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public Dog setIdUser(String idUser) {
+        this.idUser = idUser;
+        return this;
+    }
 
     public String getPhone() {
         return phone;

@@ -33,15 +33,20 @@
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ProgressBar
-                android:id="@+id/main_BAR_progress"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+<!--            <ProgressBar-->
+<!--                android:id="@+id/main_BAR_progress"-->
+<!--                android:layout_gravity="center_vertical|center_horizontal"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"/>-->
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/main_recycleView"
+
+
+
+
+            <FrameLayout
+                android:id="@+id/main_fragment"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

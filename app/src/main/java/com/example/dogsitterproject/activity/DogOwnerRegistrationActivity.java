@@ -125,7 +125,7 @@ public class DogOwnerRegistrationActivity extends AppCompatActivity {
         } else {
 
 
-            User user = new User(fullNameEdited, cityEdited, emailEdited, phoneEdited, passEdited);
+            User user = new User(fullNameEdited, "", cityEdited, emailEdited, phoneEdited, passEdited);
             changeActivity(user);
 
 

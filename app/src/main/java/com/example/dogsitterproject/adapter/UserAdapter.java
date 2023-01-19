@@ -1,48 +1,61 @@
 package com.example.dogsitterproject.adapter;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.net.Uri;
-import android.util.Log;
+
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogsitterproject.R;
+import com.example.dogsitterproject.calback.CallBackFavClicked;
 import com.example.dogsitterproject.model.DogSitter;
-import com.example.dogsitterproject.model.User;
+
 
 import com.example.dogsitterproject.utils.ImageUtils;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.dogsitterproject.utils.PermissionUtils;
 import com.makeramen.roundedimageview.RoundedImageView;
 
-import java.time.Instant;
+
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
-
     private Context context;
     private List<DogSitter> userList;
+    private CallBackFavClicked callBackFavClicked;
 
 
     public UserAdapter(Context context, List<DogSitter> userList) {
         this.context = context;
         this.userList = userList;
+
+    }
+
+    public UserAdapter setCallBackDogSitter(CallBackFavClicked callBackFavClicked){
+        this.callBackFavClicked = callBackFavClicked;
+        return this;
+
+    }
+    public  SpannableString styleBold(String s){
+        SpannableString spannableString = new SpannableString(s);
+        int startIndex = 0;
+        int endIndex = s.length();
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD),startIndex,endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString;
     }
 
     @NonNull
@@ -55,13 +68,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final DogSitter user = userList.get(position);
+        DogSitter user = getItem(position);
+
         holder.user_name.setText(user.getFullName());
         holder.user_city.setText(user.getCity());
         holder.user_phone.setText(user.getPhone());
-        holder.user_price.setText(user.getSalary()+"NIS/h");
+        holder.user_price.setText(user.getSalary()+"₪/hour");
         String photoLink = user.getProfilepictureurl();
         ImageUtils.getInstance().load(photoLink,holder.photo);
+
+    }
+
+    private DogSitter getItem(int position) {
+        return userList.get(position);
     }
 
     @Override
@@ -71,18 +90,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public RoundedImageView photo;
-        public TextView user_name;
-        public TextView user_city;
-        public TextView user_phone;
-        public TextView user_price;
-        public ImageButton fav_btn;
-        public FirebaseDatabase databaseReference;
-        public DatabaseReference fav_ref;
-        public AppCompatButton chatBtn;
+        private RoundedImageView photo;
+        private TextView user_name;
+        private TextView user_city;
+        private TextView user_phone;
+        private TextView user_price;
+        private ImageButton fav_btn;
+
+        private AppCompatButton chatBtn;
+
+        private boolean flag = false;
 
 
-        public boolean flag = false;
 
         public int PERMISSION_CODE = 100;
 
@@ -90,7 +109,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             super(itemView);
             findViews();
             init();
-            initFirebase();
+
         }
 
         public void findViews(){
@@ -103,38 +122,34 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             chatBtn = itemView.findViewById(R.id.user_view_BTN_chat);
         }
         public void init(){
-            fav_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    flag = !flag;
-                    if(flag) {
-                        fav_btn.setImageResource(R.drawable.ic_favorite_red);
-                    }
-                    else{
-                        fav_btn.setImageResource(R.drawable.ic_favorite_border);
-                    }
+
+            fav_btn.setOnClickListener(v -> {
+                flag = !flag;
+                if(flag) {
+                    callBackFavClicked.favClicked(getItem(getAdapterPosition()));
+                    fav_btn.setImageResource(R.drawable.ic_favorite_red);
+
+                }
+                else{
+                    fav_btn.setImageResource(R.drawable.ic_favorite_border);
                 }
             });
 
 
-            chatBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    if(ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
-                        ActivityCompat.requestPermissions((Activity)context, new String[]{Manifest.permission.CALL_PHONE},100);
-                    }
-                    else {
-                        Intent intent = new Intent(Intent.ACTION_CALL);
-                        intent.setData(Uri.parse("tel:" + user_phone.getText().toString()));
-                        context.startActivity(intent);
-                    }
-                }
+
+
+
+
+
+            chatBtn.setOnClickListener(v -> {
+                PermissionUtils.getInstance().checkCallPermission();
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:" + getItem(getAdapterPosition()).getPhone()));
+                context.startActivity(intent);
             });
         }
-        public void initFirebase(){
-            databaseReference = FirebaseDatabase.getInstance();
-        }
+
 
 
 
