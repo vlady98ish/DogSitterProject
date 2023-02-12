@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_Primary"
-    android:orientation="vertical"
-    android:padding="20dp"
+    android:padding="16dp"
     tools:context=".activity.DogOwnerRegistrationActivity">
 
+
+
+    <TextView
+        android:id="@+id/dogOwnerReg_LBL_registration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/registration"
+        android:textColor="@color/color_text"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:gravity="bottom"
+        />
+
+
     <LinearLayout
+        android:id="@+id/dogOwnerReg_form"
+        android:layout_below="@id/dogOwnerReg_LBL_registration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         >
 
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/registration"
-            android:textColor="@color/color_text"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:gravity="bottom"
-            />
 
-    </LinearLayout>
+
+
 
 
     <!--        FULL NAME-->
@@ -64,11 +70,13 @@
 
     <!--        CITY-->
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:id="@+id/dogOwnerReg_IN_city"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/TextInputLayoutStyle"
         app:boxStrokeColor="@color/color_text"
+        android:hint="Enter city"
         app:hintTextAppearance="@color/colorPrimary"
         app:helperTextEnabled="true"
         android:textColorHint="@color/color_text"
@@ -79,16 +87,16 @@
 
 
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dogOwnerReg_IN_city"
+
+
+        <AutoCompleteTextView
+            android:id="@+id/dogOwnerReg_AUTO_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
-            android:hint="Enter city"
             android:drawableStart="@drawable/ic_city"
-            android:inputType="text"
-            android:textColor="@color/color_text"
+            android:drawablePadding="10dp"
             />
+
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -180,7 +188,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
+    </LinearLayout>
 
 
 
@@ -188,10 +196,10 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/dogOwnerReg_BTN_continue"
+        android:layout_above="@id/dogOwnerReg_LBL_backBTN"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="275dp"
         android:background="@drawable/button_background"
         android:text="Continue"
         android:textAllCaps="false"
@@ -203,15 +211,16 @@
 
     <TextView
         android:id="@+id/dogOwnerReg_LBL_backBTN"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:gravity="center"
+        android:layout_marginTop="16dp"
         android:text="@string/signUp_already_register"
         android:textColor="@color/color_secondary"
-        android:textStyle="bold" />
+        />
 
 
 
 
-</LinearLayout>
+</RelativeLayout>

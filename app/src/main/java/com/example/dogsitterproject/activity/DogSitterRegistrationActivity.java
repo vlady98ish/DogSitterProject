@@ -35,6 +35,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import android.widget.TextView;
@@ -49,6 +51,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -71,7 +74,8 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
     private TextView backButton;
     private CircleImageView profileImage;
     private TextInputEditText fullName;
-    private TextInputEditText city;
+    private TextInputLayout city;
+    private AutoCompleteTextView city_auto;
     private TextInputEditText phone;
     private TextInputEditText email;
     private TextInputEditText password;
@@ -103,6 +107,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
         profileImage = findViewById(R.id.dogSitterReg_IMG_profileImage);
         fullName = findViewById(R.id.dogSitterReg_IN_FullName);
         city = findViewById(R.id.dogSitterReg_IN_city);
+        city_auto = findViewById(R.id.dogSitterReg_AUTO_city);
         phone = findViewById(R.id.dogSitterReg_IN_phoneNumber);
         email = findViewById(R.id.dogSitterReg_IN_email);
         password = findViewById(R.id.dogSitterReg_IN_password);
@@ -110,7 +115,16 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
         salary = findViewById(R.id.dogSitterReg_IN_salary);
         loader = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
+        fillAdapters();
 
+    }
+
+    private void fillAdapters(){
+        String[] cities = new String[] {"Tel Aviv", "Ramat Gan", "Hadera", "Haifa", "Eilat", "Bat Yam"};
+        ArrayAdapter<String> breadsAdapter = new ArrayAdapter<>(
+                this,R.layout.dropdown_item,cities
+        );
+        city_auto.setAdapter(breadsAdapter);
     }
 
 
@@ -135,7 +149,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
         String passEdited = Objects
                 .requireNonNull(password.getText()).toString().trim();
         String cityEdited = Objects
-                .requireNonNull(city.getText()).toString().trim();
+                .requireNonNull(city_auto.getText()).toString().trim();
         String fullNameEdited = Objects
                 .requireNonNull(fullName.getText()).toString().trim();
         String phoneEdited = Objects
@@ -180,7 +194,12 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
             city.setError(ID_REQUIRED);
             city.requestFocus();
 
-        } else {
+        }
+        if(resultUri == null){
+            Toast.makeText(this,"Image required", Toast.LENGTH_SHORT).show();
+        }
+
+        else {
             loader.setMessage(REGISTERING_LOADER);
             loader.setCanceledOnTouchOutside(false);
             loader.show();
@@ -315,6 +334,10 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
                                     });
 
                             saveImage(resultUri, currentUserId);
+//                            Intent intent = new Intent(DogSitterRegistrationActivity.this, MainActivity.class);
+//                            startActivity(intent);
+//                            loader.dismiss();
+//                            finish();
                         }
                     }
                 });

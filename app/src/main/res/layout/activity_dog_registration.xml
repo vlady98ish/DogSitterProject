@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_Primary"
-    android:orientation="vertical"
-    android:padding="20dp"
+    android:padding="16dp"
     tools:context=".activity.DogRegistration">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+
 
         <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:id="@+id/dogReg_LBL_reg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Dog Registration"
             android:textColor="@color/color_text"
             android:textSize="32sp"
@@ -28,18 +23,24 @@
             android:layout_marginBottom="20dp"
             />
 
-    </LinearLayout>
+
 
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/dogReg_IMG_profileImage"
+        android:layout_below="@+id/dogReg_LBL_reg"
         android:layout_width="95dp"
         android:layout_height="95dp"
-        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/img_user_profile"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         />
-
+<LinearLayout
+    android:layout_below="@+id/dogReg_IMG_profileImage"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
     <!--        FULL NAME-->
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -47,6 +48,7 @@
         android:layout_height="wrap_content"
         android:theme="@style/TextInputLayoutStyle"
         app:boxStrokeColor="@color/color_text"
+        app:startIconDrawable="@drawable/ic_person"
         app:hintTextAppearance="@color/colorPrimary"
         app:helperTextEnabled="true"
         android:textColorHint="@color/color_text"
@@ -74,30 +76,29 @@
 
     <!--        CITY-->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/dogReg_IN_gender"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/TextInputLayoutStyle"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:drawablePadding="10dp"
+        app:startIconDrawable="@drawable/ic_gender"
+        android:hint="Enter gender"
         app:boxStrokeColor="@color/color_text"
+        app:endIconMode="dropdown_menu"
         app:hintTextAppearance="@color/colorPrimary"
         app:helperTextEnabled="true"
+
         android:textColorHint="@color/color_text"
         android:textSize="22sp"
         android:layout_marginVertical="8dp"
         >
 
 
-
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dogReg_IN_gender"
+        <AutoCompleteTextView
+            android:id="@+id/dogReg_AUTO_gender"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
-            android:hint="Enter gender"
-            android:inputType="text"
-            android:textColor="@color/color_text"
-            />
+            android:layout_height="wrap_content"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,6 +111,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:startIconDrawable="@drawable/ic_year"
         android:theme="@style/TextInputLayoutStyle"
         app:boxStrokeColor="@color/color_text"
         app:hintTextAppearance="@color/colorPrimary"
@@ -125,7 +127,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
             android:hint="Enter age"
-
+            android:digits="0123456789."
             android:inputType="numberDecimal"
             android:textColor="@color/color_text"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -137,11 +139,16 @@
 
     <!--        E-mail-->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/dogReg_IN_breed"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/TextInputLayoutStyle"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        app:startIconDrawable="@drawable/ic_style"
+        android:drawablePadding="10dp"
+        android:hint="Enter breed"
         app:boxStrokeColor="@color/color_text"
+        app:endIconMode="dropdown_menu"
         app:hintTextAppearance="@color/colorPrimary"
         app:helperTextEnabled="true"
         android:textColorHint="@color/color_text"
@@ -149,15 +156,10 @@
         android:layout_marginVertical="8dp"
         >
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dogReg_IN_breed"
+        <AutoCompleteTextView
+            android:id="@+id/dogReg_AUTO_breed"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
-            android:hint="Enter Breed"
-
-            android:inputType="text"
-            android:textColor="@color/color_text"/>
+            android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -167,6 +169,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:startIconDrawable="@drawable/ic_style"
+        android:drawablePadding="10dp"
         android:theme="@style/TextInputLayoutStyle"
         app:boxStrokeColor="@color/color_text"
         app:hintTextAppearance="@color/colorPrimary"
@@ -183,19 +187,21 @@
             android:drawablePadding="10dp"
             android:hint="Enter weight"
             android:inputType="numberDecimal"
+            android:digits="0123456789."
             android:textColor="@color/color_text"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
 
 
-
+</LinearLayout>
 
     <!--        ADD MAP -->
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/dogReg_BTN_signUp"
         android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
@@ -211,4 +217,4 @@
 
 
 
-</LinearLayout>
+</RelativeLayout>

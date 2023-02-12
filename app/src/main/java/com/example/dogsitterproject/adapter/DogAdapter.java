@@ -1,10 +1,13 @@
 package com.example.dogsitterproject.adapter;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogsitterproject.R;
@@ -23,7 +28,6 @@ import com.example.dogsitterproject.model.Dog;
 
 import com.example.dogsitterproject.utils.ImageUtils;
 
-import com.example.dogsitterproject.utils.PermissionUtils;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
@@ -121,7 +125,9 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
 
 
             chatBtn.setOnClickListener(v -> {
-                PermissionUtils.getInstance().checkCallPermission();
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 100);
+                }
                 Intent intent = new Intent(Intent.ACTION_CALL);
                 intent.setData(Uri.parse("tel:" + getItem(getAdapterPosition()).getPhone()));
                 context.startActivity(intent);

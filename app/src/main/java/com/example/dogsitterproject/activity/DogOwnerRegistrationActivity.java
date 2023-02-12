@@ -17,6 +17,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ import com.example.dogsitterproject.R;
 
 import com.example.dogsitterproject.model.User;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
@@ -34,7 +37,8 @@ public class DogOwnerRegistrationActivity extends AppCompatActivity {
 
     private TextView backButton;
     private TextInputEditText fullName;
-    private TextInputEditText city;
+    private TextInputLayout city;
+    private AutoCompleteTextView city_auto;
     private TextInputEditText phone;
     private TextInputEditText email;
     private TextInputEditText password;
@@ -60,8 +64,17 @@ public class DogOwnerRegistrationActivity extends AppCompatActivity {
         email = findViewById(R.id.dogOwnerReg_IN_email);
         password = findViewById(R.id.dogOwnerReg_IN_password);
         continueButton = findViewById(R.id.dogOwnerReg_BTN_continue);
+        city_auto = findViewById(R.id.dogOwnerReg_AUTO_city);
+        fillAdapters();
 
+    }
 
+    private void fillAdapters(){
+        String[] cities = new String[] {"Tel Aviv", "Ramat Gan", "Hadera", "Haifa", "Eilat", "Bat Yam"};
+        ArrayAdapter<String> breadsAdapter = new ArrayAdapter<>(
+                this,R.layout.dropdown_item,cities
+        );
+        city_auto.setAdapter(breadsAdapter);
     }
 
 
@@ -84,7 +97,7 @@ public class DogOwnerRegistrationActivity extends AppCompatActivity {
         String passEdited = Objects
                 .requireNonNull(password.getText()).toString().trim();
         String cityEdited = Objects
-                .requireNonNull(city.getText()).toString().trim();
+                .requireNonNull(city_auto.getText()).toString().trim();
         String fullNameEdited = Objects
                 .requireNonNull(fullName.getText()).toString().trim();
         String phoneEdited = Objects

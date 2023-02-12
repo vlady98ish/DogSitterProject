@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_Primary"
-    android:orientation="vertical"
-    android:padding="20dp"
+
+    android:padding="16dp"
     tools:context=".activity.DogSitterRegistrationActivity">
 
 <LinearLayout
+    android:id="@+id/dogSitterReg_LBL_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -23,7 +24,7 @@
         android:textColor="@color/color_text"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:gravity="bottom"
+        android:gravity="center|start"
         />
 
 
@@ -40,7 +41,12 @@
         />
 </LinearLayout>
 
-
+    <LinearLayout
+        android:layout_below="@+id/dogSitterReg_LBL_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 <!--        FULL NAME-->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -76,13 +82,15 @@
 
         <!--        CITY-->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:id="@+id/dogSitterReg_IN_city"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/TextInputLayoutStyle"
             app:boxStrokeColor="@color/color_text"
             app:hintTextAppearance="@color/colorPrimary"
             app:helperTextEnabled="true"
+            android:hint="Enter city"
             android:textColorHint="@color/color_text"
             android:textSize="22sp"
             android:layout_marginVertical="8dp"
@@ -90,17 +98,14 @@
 
 
 
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/dogSitterReg_IN_city"
+            <AutoCompleteTextView
+                android:id="@+id/dogSitterReg_AUTO_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="10dp"
-                android:hint="Enter city"
                 android:drawableStart="@drawable/ic_city"
-                android:inputType="text"
-                android:textColor="@color/color_text"
+                android:drawablePadding="10dp"
                 />
+
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -218,9 +223,10 @@
 
 
     <!--        ADD MAP -->
-
+    </LinearLayout>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/dogSitterReg_BTN_register"
+            android:layout_above="@id/dogSitterReg_LBL_backBTN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -234,15 +240,16 @@
 
         <TextView
             android:id="@+id/dogSitterReg_LBL_backBTN"
+            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="@string/signUp_already_register"
             android:textColor="@color/color_secondary"
-            android:textStyle="bold" />
+            />
 
 
 
 
-</LinearLayout>
+</RelativeLayout>

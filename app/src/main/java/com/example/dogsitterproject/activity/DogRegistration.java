@@ -33,6 +33,8 @@ import android.os.Bundle;
 
 import android.text.TextUtils;
 
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -45,6 +47,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -64,9 +67,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DogRegistration extends AppCompatActivity {
 
     private TextInputEditText name;
-    private TextInputEditText gender;
+    private TextInputLayout gender;
+    private AutoCompleteTextView gender_auto;
     private TextInputEditText age;
-    private TextInputEditText breed;
+    private TextInputLayout breed;
+    private AutoCompleteTextView breed_auto;
     private TextInputEditText weight;
     private CircleImageView petImage;
 
@@ -78,6 +83,7 @@ public class DogRegistration extends AppCompatActivity {
     private Uri resultUri;
     private ProgressDialog loader;
     private Button regButton;
+
 
 
     @Override
@@ -105,7 +111,27 @@ public class DogRegistration extends AppCompatActivity {
         name = findViewById(R.id.dogReg_IN_Name);
         regButton = findViewById(R.id.dogReg_BTN_signUp);
         loader = new ProgressDialog(this);
+        gender_auto = findViewById(R.id.dogReg_AUTO_gender);
+        breed_auto = findViewById(R.id.dogReg_AUTO_breed);
+        fillAdapters();
 
+
+
+
+    }
+
+    private void fillAdapters(){
+        String [] gender = new String[] {"Female","Male"};
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(
+                this,R.layout.dropdown_item,gender
+        );
+        gender_auto.setAdapter(genderAdapter);
+
+        String [] breeds = new  String[] {"Boxer","Borzoi","Bullmastiff","Chow Chow","Chihuahua"};
+        ArrayAdapter<String> breadsAdapter = new ArrayAdapter<>(
+                this,R.layout.dropdown_item,breeds
+        );
+        breed_auto.setAdapter(breadsAdapter);
     }
 
     private void initFirebase() {
@@ -139,11 +165,11 @@ public class DogRegistration extends AppCompatActivity {
         String nameEdited = Objects.
                 requireNonNull(name.getText()).toString().trim();
         String ganderEdited = Objects
-                .requireNonNull(gender.getText()).toString().trim();
+                .requireNonNull(gender_auto.getText()).toString().trim();
         String ageEdited = Objects
                 .requireNonNull(age.getText()).toString().trim();
         String breedEdited = Objects
-                .requireNonNull(breed.getText()).toString().trim();
+                .requireNonNull(breed_auto.getText()).toString().trim();
         String weightEdited = Objects
                 .requireNonNull(weight.getText()).toString().trim();
 
