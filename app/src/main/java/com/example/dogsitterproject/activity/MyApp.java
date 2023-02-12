@@ -13,6 +13,5 @@ public class MyApp extends Application {
         ImageUtils.initHelper(this);
 
 
-
     }
 }

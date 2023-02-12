@@ -69,10 +69,10 @@ public class DogOwnerRegistrationActivity extends AppCompatActivity {
 
     }
 
-    private void fillAdapters(){
-        String[] cities = new String[] {"Tel Aviv", "Ramat Gan", "Hadera", "Haifa", "Eilat", "Bat Yam"};
+    private void fillAdapters() {
+        String[] cities = new String[]{"Tel Aviv", "Ramat Gan", "Hadera", "Haifa", "Eilat", "Bat Yam"};
         ArrayAdapter<String> breadsAdapter = new ArrayAdapter<>(
-                this,R.layout.dropdown_item,cities
+                this, R.layout.dropdown_item, cities
         );
         city_auto.setAdapter(breadsAdapter);
     }

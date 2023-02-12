@@ -1,9 +1,14 @@
 package com.example.dogsitterproject.activity;
 
+import static com.example.dogsitterproject.utils.ConstUtils.CITY;
 import static com.example.dogsitterproject.utils.ConstUtils.DOGS_DATA;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
 
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
+import static com.example.dogsitterproject.utils.ConstUtils.EMAIL;
+import static com.example.dogsitterproject.utils.ConstUtils.FULL_NAME;
+import static com.example.dogsitterproject.utils.ConstUtils.PHONE;
+import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
 
 import androidx.annotation.NonNull;
@@ -147,13 +152,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    String name = snapshot.child("fullName").getValue().toString();
+                    String name = snapshot.child(FULL_NAME).getValue().toString();
                     userName.setText(name);
-                    String city = snapshot.child("city").getValue().toString();
+                    String city = snapshot.child(CITY).getValue().toString();
                     userCity.setText(city);
-                    String phone = snapshot.child("phone").getValue().toString();
+                    String phone = snapshot.child(PHONE).getValue().toString();
                     userPhone.setText(phone);
-                    String email = snapshot.child("email").getValue().toString();
+                    String email = snapshot.child(EMAIL).getValue().toString();
                     userEmail.setText(email);
                     if (typeUser.equals(DOG_OWNER)) {
                         dogRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -206,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String type = snapshot.child("type").getValue().toString();
+                String type = snapshot.child(TYPE).getValue().toString();
 
                 if (type.equals(DOG_SITTER)) {
                     renderUiDog();
@@ -232,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                typeUser = snapshot.child("type").getValue().toString();
+                typeUser = snapshot.child(TYPE).getValue().toString();
 
             }
 

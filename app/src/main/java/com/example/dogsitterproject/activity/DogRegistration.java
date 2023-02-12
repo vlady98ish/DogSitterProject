@@ -7,9 +7,11 @@ import static com.example.dogsitterproject.utils.ConstUtils.DOG_IMAGES;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_PIC_URL;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SET_SUCCESSFULLY;
+import static com.example.dogsitterproject.utils.ConstUtils.IMAGE;
 import static com.example.dogsitterproject.utils.ConstUtils.IMG_FAILED;
 import static com.example.dogsitterproject.utils.ConstUtils.IMG_UPLOADED;
 import static com.example.dogsitterproject.utils.ConstUtils.PICK_IMAGE_REQUEST;
+import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_SET_SUCCESSFULLY;
 import static com.example.dogsitterproject.utils.ConstUtils.EMAIL_REQUIRED;
@@ -85,7 +87,6 @@ public class DogRegistration extends AppCompatActivity {
     private Button regButton;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,20 +117,18 @@ public class DogRegistration extends AppCompatActivity {
         fillAdapters();
 
 
-
-
     }
 
-    private void fillAdapters(){
-        String [] gender = new String[] {"Female","Male"};
+    private void fillAdapters() {
+        String[] gender = new String[]{"Female", "Male"};
         ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(
-                this,R.layout.dropdown_item,gender
+                this, R.layout.dropdown_item, gender
         );
         gender_auto.setAdapter(genderAdapter);
 
-        String [] breeds = new  String[] {"Boxer","Borzoi","Bullmastiff","Chow Chow","Chihuahua"};
+        String[] breeds = new String[]{"Boxer", "Borzoi", "Bullmastiff", "Chow Chow", "Chihuahua"};
         ArrayAdapter<String> breadsAdapter = new ArrayAdapter<>(
-                this,R.layout.dropdown_item,breeds
+                this, R.layout.dropdown_item, breeds
         );
         breed_auto.setAdapter(breadsAdapter);
     }
@@ -156,7 +155,7 @@ public class DogRegistration extends AppCompatActivity {
 
     private void getImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
+        intent.setType(IMAGE);
         startActivityForResult(Intent.createChooser(intent, SELECT_PICTURE), PICK_IMAGE_REQUEST);
     }
 
@@ -300,7 +299,7 @@ public class DogRegistration extends AppCompatActivity {
                                     .child(currentUserId);
 
                             Map newTypeMap = new HashMap();
-                            newTypeMap.put("type", DOG_OWNER);
+                            newTypeMap.put(TYPE, DOG_OWNER);
 
 
                             reference

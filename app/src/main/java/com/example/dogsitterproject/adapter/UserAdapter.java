@@ -3,7 +3,6 @@ package com.example.dogsitterproject.adapter;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -37,36 +36,49 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private Context context;
     private List<DogSitter> userList;
+
+    private List<Boolean> favList;
     private CallBackFavClicked callBackFavClicked;
 
+    private boolean fav = false;
 
-    public UserAdapter(Context context, List<DogSitter> userList) {
+
+    public UserAdapter(Context context, List<DogSitter> userList, List<Boolean> favList, boolean fav) {
         this.context = context;
         this.userList = userList;
+        this.fav = fav;
+        this.favList = favList;
+    }
+
+    public UserAdapter(Context context, List<DogSitter> userList, boolean fav) {
+        this.context = context;
+        this.userList = userList;
+        this.fav = fav;
 
     }
 
-    public UserAdapter setCallBackDogSitter(CallBackFavClicked callBackFavClicked){
+    public UserAdapter setCallBackDogSitter(CallBackFavClicked callBackFavClicked) {
         this.callBackFavClicked = callBackFavClicked;
         return this;
 
     }
-    public  SpannableString styleBold(String s){
+
+    public SpannableString styleBold(String s) {
         SpannableString spannableString = new SpannableString(s);
         int startIndex = 0;
         int endIndex = s.length();
-        spannableString.setSpan(new StyleSpan(Typeface.BOLD),startIndex,endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannableString;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.user_view, parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.user_view, parent, false);
         return new ViewHolder(view);
     }
 
@@ -74,13 +86,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DogSitter user = getItem(position);
-
+        final boolean favFlag;
+        if (fav) {
+            holder.fav_btn.setVisibility(View.GONE);
+        } else {
+            favFlag = favList.get(position);
+            if (favFlag) {
+                holder.fav_btn.setImageResource(R.drawable.ic_favourite);
+                holder.flag = true;
+            }
+        }
         holder.user_name.setText(user.getFullName());
         holder.user_city.setText(user.getCity());
         holder.user_phone.setText(user.getPhone());
-        holder.user_price.setText(user.getSalary()+"₪/hour");
+        holder.user_price.setText(user.getSalary() + "₪/hour");
         String photoLink = user.getProfilepictureurl();
-        ImageUtils.getInstance().load(photoLink,holder.photo);
+        ImageUtils.getInstance().load(photoLink, holder.photo);
 
     }
 
@@ -93,7 +114,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         return userList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private RoundedImageView photo;
         private TextView user_name;
@@ -104,8 +125,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
         private AppCompatButton chatBtn;
 
-        private boolean flag = false;
-
+        private boolean flag;
 
 
         public int PERMISSION_CODE = 100;
@@ -117,7 +137,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
         }
 
-        public void findViews(){
+        public void findViews() {
             photo = itemView.findViewById(R.id.user_view_IMG_photo);
             user_name = itemView.findViewById(R.id.user_view_name);
             user_city = itemView.findViewById(R.id.user_view_city);
@@ -126,38 +146,33 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             fav_btn = itemView.findViewById(R.id.user_view_BTN_fav);
             chatBtn = itemView.findViewById(R.id.user_view_BTN_chat);
         }
-        public void init(){
 
+        public void init() {
+            flag = false;
             fav_btn.setOnClickListener(v -> {
                 flag = !flag;
-                if(flag) {
+                if (flag) {
                     callBackFavClicked.favClicked(getItem(getAdapterPosition()));
-                    fav_btn.setImageResource(R.drawable.ic_favorite_red);
+                    fav_btn.setImageResource(R.drawable.ic_favourite);
 
-                }
-                else{
+                } else {
+                    callBackFavClicked.removeFromFav(getItem(getAdapterPosition()));
                     fav_btn.setImageResource(R.drawable.ic_favorite_border);
                 }
             });
-
-
-
-
-
-
 
 
             chatBtn.setOnClickListener(v -> {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 100);
                 }
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + getItem(getAdapterPosition()).getPhone()));
-                context.startActivity(intent);
+                else {
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.setData(Uri.parse("tel:" + getItem(getAdapterPosition()).getPhone()));
+                    context.startActivity(intent);
+                }
             });
         }
-
-
 
 
     }

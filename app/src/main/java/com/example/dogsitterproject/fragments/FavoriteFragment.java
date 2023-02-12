@@ -2,6 +2,9 @@ package com.example.dogsitterproject.fragments;
 
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
+import static com.example.dogsitterproject.utils.ConstUtils.NO_DOGS;
+import static com.example.dogsitterproject.utils.ConstUtils.NO_DOG_SITTERS;
+import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
 
 import android.os.Bundle;
@@ -33,16 +36,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class FavoriteFragment extends Fragment {
-        private RecyclerView recyclerView;
-
-
-
+    private RecyclerView recyclerView;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_fav, container,false);
+        View view = inflater.inflate(R.layout.fragment_fav, container, false);
         findViews(view);
         initLayerManager();
         initViews();
@@ -57,11 +57,11 @@ public class FavoriteFragment extends Fragment {
         FirebaseDB.CallBack_FavData callBack_favData = new FirebaseDB.CallBack_FavData() {
             @Override
             public void dogDataReady(ArrayList<Dog> dogs) {
-                DogAdapter dogAdapter = new DogAdapter(getActivity(), dogs);
+                DogAdapter dogAdapter = new DogAdapter(getActivity(), dogs, true);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
 
                 if (dogs.isEmpty()) {
-                    Toast.makeText(getActivity(), "No dogs", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), NO_DOGS, Toast.LENGTH_SHORT).show();
 
                 }
 //                loader.dismiss();
@@ -72,11 +72,11 @@ public class FavoriteFragment extends Fragment {
 
             @Override
             public void dogSittersDataReady(ArrayList<DogSitter> dogSitters) {
-                UserAdapter dogSitterAdapter = new UserAdapter(getActivity(), dogSitters);
+                UserAdapter dogSitterAdapter = new UserAdapter(getActivity(), dogSitters, true);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
 
                 if (dogSitters.isEmpty()) {
-                    Toast.makeText(getActivity(), "No dogs", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), NO_DOG_SITTERS, Toast.LENGTH_SHORT).show();
 
                 }
 //                loader.dismiss();
@@ -84,14 +84,15 @@ public class FavoriteFragment extends Fragment {
                 dogSitterAdapter.notifyDataSetChanged();
                 recyclerView.setAdapter(dogSitterAdapter);
             }
-            };
+        };
 
 
         triggerFB(callBack_favData);
 
 
     }
-    private void findViews(View view){
+
+    private void findViews(View view) {
         recyclerView = view.findViewById(R.id.fav_recycleView);
     }
 
@@ -112,7 +113,7 @@ public class FavoriteFragment extends Fragment {
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String typeUser = snapshot.child("type").getValue().toString();
+                String typeUser = snapshot.child(TYPE).getValue().toString();
                 if (typeUser.equals(DOG_SITTER)) {
                     FirebaseDB.getFavDogs(callBack_favData);
                 } else if (typeUser.equals(DOG_OWNER)) {

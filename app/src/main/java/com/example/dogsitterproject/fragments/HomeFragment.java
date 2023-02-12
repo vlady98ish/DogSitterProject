@@ -1,10 +1,16 @@
 package com.example.dogsitterproject.fragments;
 
+import static com.example.dogsitterproject.utils.ConstUtils.DOGS_DATA;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
+import static com.example.dogsitterproject.utils.ConstUtils.NO_DOGS;
+import static com.example.dogsitterproject.utils.ConstUtils.NO_DOG_SITTERS;
+import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +33,7 @@ import com.example.dogsitterproject.calback.CallBackFavClicked;
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.DogSitter;
 import com.example.dogsitterproject.db.FirebaseDB;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,11 +42,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
-
-
 
 
     private AppCompatActivity activity;
@@ -70,13 +76,13 @@ public class HomeFragment extends Fragment {
 //        loader.show();
         FirebaseDB.CallBack_Data callBack_data = new FirebaseDB.CallBack_Data() {
             @Override
-            public void dogDataReady(ArrayList<Dog> dogs) {
-                DogAdapter dogAdapter = new DogAdapter(getActivity(), dogs);
+            public void dogDataReady(ArrayList<Dog> dogs, ArrayList<Boolean> flags) {
+                DogAdapter dogAdapter = new DogAdapter(getActivity(), dogs, flags, false);
                 dogAdapter.setCallBackDog(callBackFavClicked);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
 
                 if (dogs.isEmpty()) {
-                    Toast.makeText(activity, "No dogs", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, NO_DOGS, Toast.LENGTH_SHORT).show();
 
                 }
 //                loader.dismiss();
@@ -85,16 +91,15 @@ public class HomeFragment extends Fragment {
                 recyclerView.setAdapter(dogAdapter);
 
 
-
             }
 
             @Override
-            public void dogSittersDataReady(ArrayList<DogSitter> dogSitters) {
-                UserAdapter dogSitterAdapter = new UserAdapter(getActivity(), dogSitters);
+            public void dogSittersDataReady(ArrayList<DogSitter> dogSitters, ArrayList<Boolean> flags) {
+                UserAdapter dogSitterAdapter = new UserAdapter(getActivity(), dogSitters, flags, false);
                 dogSitterAdapter.setCallBackDogSitter(callBackFavClicked);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 if (dogSitters.isEmpty()) {
-                    Toast.makeText(activity, "No dog sitters", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, NO_DOG_SITTERS, Toast.LENGTH_SHORT).show();
 
                 }
 //                loader.dismiss();
@@ -119,7 +124,7 @@ public class HomeFragment extends Fragment {
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String typeUser = snapshot.child("type").getValue().toString();
+                String typeUser = snapshot.child(TYPE).getValue().toString();
                 if (typeUser.equals(DOG_SITTER)) {
                     FirebaseDB.getAllDogs(callBack_data);
                 } else if (typeUser.equals(DOG_OWNER)) {
@@ -154,26 +159,23 @@ public class HomeFragment extends Fragment {
     CallBackFavClicked callBackFavClicked = new CallBackFavClicked() {
         @Override
         public void favClicked(Dog dog) {
-            DatabaseReference dogRef = FirebaseDatabase
-                    .getInstance()
-                    .getReference()
-                    .child(USER_DATA)
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString())
-                    .child("favorite")
-                    .child(dog.getIdUser());
-            dogRef.setValue(dog);
+            FirebaseDB.updateFavDog(dog);
         }
 
         @Override
         public void favClicked(DogSitter dogSitter) {
-            DatabaseReference sitterRef = FirebaseDatabase
-                    .getInstance()
-                    .getReference()
-                    .child(USER_DATA)
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString())
-                    .child("favorite")
-                    .child(dogSitter.getId());
-            sitterRef.setValue(dogSitter);
+            FirebaseDB.updateFavDogSitter(dogSitter);
+        }
+
+        @Override
+        public void removeFromFav(Dog item) {
+            FirebaseDB.removeFromFavDog(item);
+
+        }
+
+        @Override
+        public void removeFromFav(DogSitter dogSitter) {
+            FirebaseDB.removeFromFavDogSitter(dogSitter);
         }
     };
 

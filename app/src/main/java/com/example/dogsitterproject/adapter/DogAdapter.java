@@ -37,12 +37,24 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
 
     private Context context;
     private List<Dog> dogsList;
+
+    private List<Boolean> favList;
     private CallBackFavClicked callBackFavClicked;
 
+    private boolean fav = false;
 
-    public DogAdapter(Context context, List<Dog> dogsList) {
+
+    public DogAdapter(Context context, List<Dog> dogsList, List<Boolean> flags, boolean fav) {
         this.context = context;
         this.dogsList = dogsList;
+        this.fav = fav;
+        this.favList = flags;
+    }
+
+    public DogAdapter(Context context, List<Dog> dogsList, boolean fav) {
+        this.context = context;
+        this.dogsList = dogsList;
+        this.fav = fav;
     }
 
     public DogAdapter setCallBackDog(CallBackFavClicked callBackFavClicked) {
@@ -65,13 +77,23 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Dog dog = dogsList.get(position);
+        final boolean favFlag;
+        if (fav) {
+            holder.fav_btn.setVisibility(View.GONE);
+        } else {
+            favFlag = favList.get(position);
+            if (favFlag) {
+
+                holder.fav_btn.setImageResource(R.drawable.ic_favourite);
+                holder.flag = true;
+            }
+        }
         holder.dog_name.setText(dog.getName());
         holder.dog_breed.setText(dog.getBreed());
         holder.dog_age.setText(dog.getAge() + " Years");
         holder.dog_weight.setText(dog.getWeight() + " Kg");
         String photoLink = dog.getDogpictureurl();
         ImageUtils.getInstance().load(photoLink, holder.photo);
-
 
 
     }
@@ -117,8 +139,9 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
                 flag = !flag;
                 if (flag) {
                     callBackFavClicked.favClicked(getItem(getAdapterPosition()));
-                    fav_btn.setImageResource(R.drawable.ic_favorite_red);
+                    fav_btn.setImageResource(R.drawable.ic_favourite);
                 } else {
+                    callBackFavClicked.removeFromFav(getItem(getAdapterPosition()));
                     fav_btn.setImageResource(R.drawable.ic_favorite_border);
                 }
             });
@@ -128,9 +151,11 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.CALL_PHONE}, 100);
                 }
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + getItem(getAdapterPosition()).getPhone()));
-                context.startActivity(intent);
+                else {
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.setData(Uri.parse("tel:" + getItem(getAdapterPosition()).getPhone()));
+                    context.startActivity(intent);
+                }
             });
 
 

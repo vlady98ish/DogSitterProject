@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DogSitterProject</string>
+    <string name="app_name">Woof!</string>
 
     <string name="splash_title_name">Woof!</string>
     <string name="splash_slogan_name">Your pet is safe with us</string>

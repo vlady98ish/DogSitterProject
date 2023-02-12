@@ -2,12 +2,15 @@ package com.example.dogsitterproject.activity;
 
 
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
+import static com.example.dogsitterproject.utils.ConstUtils.IMAGE;
+import static com.example.dogsitterproject.utils.ConstUtils.IMAGE_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.IMG_FAILED;
 import static com.example.dogsitterproject.utils.ConstUtils.IMG_UPLOADED;
 
 import static com.example.dogsitterproject.utils.ConstUtils.PICK_IMAGE_REQUEST;
 import static com.example.dogsitterproject.utils.ConstUtils.PROFILE_IMAGES;
 import static com.example.dogsitterproject.utils.ConstUtils.PROFILE_PIC_URL;
+import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_SET_SUCCESSFULLY;
 import static com.example.dogsitterproject.utils.ConstUtils.EMAIL_REQUIRED;
@@ -119,10 +122,10 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
 
     }
 
-    private void fillAdapters(){
-        String[] cities = new String[] {"Tel Aviv", "Ramat Gan", "Hadera", "Haifa", "Eilat", "Bat Yam"};
+    private void fillAdapters() {
+        String[] cities = new String[]{"Tel Aviv", "Ramat Gan", "Hadera", "Haifa", "Eilat", "Bat Yam"};
         ArrayAdapter<String> breadsAdapter = new ArrayAdapter<>(
-                this,R.layout.dropdown_item,cities
+                this, R.layout.dropdown_item, cities
         );
         city_auto.setAdapter(breadsAdapter);
     }
@@ -195,11 +198,9 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
             city.requestFocus();
 
         }
-        if(resultUri == null){
-            Toast.makeText(this,"Image required", Toast.LENGTH_SHORT).show();
-        }
-
-        else {
+        if (resultUri == null) {
+            Toast.makeText(this, IMAGE_REQUIRED, Toast.LENGTH_SHORT).show();
+        } else {
             loader.setMessage(REGISTERING_LOADER);
             loader.setCanceledOnTouchOutside(false);
             loader.show();
@@ -262,7 +263,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
 
     private void getImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
+        intent.setType(IMAGE);
         startActivityForResult(Intent.createChooser(intent, SELECT_PICTURE), PICK_IMAGE_REQUEST);
     }
 
@@ -295,7 +296,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
                                     .child(currentUserId);
 
                             Map newTypeMap = new HashMap();
-                            newTypeMap.put("type", DOG_SITTER);
+                            newTypeMap.put(TYPE, DOG_SITTER);
                             DogSitter user = new DogSitter(fullNameEdited,
                                     currentUserId,
                                     cityEdited,
@@ -334,10 +335,6 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
                                     });
 
                             saveImage(resultUri, currentUserId);
-//                            Intent intent = new Intent(DogSitterRegistrationActivity.this, MainActivity.class);
-//                            startActivity(intent);
-//                            loader.dismiss();
-//                            finish();
                         }
                     }
                 });
