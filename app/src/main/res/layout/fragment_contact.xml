@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    >
+
+
+
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/contact_IMG_linkedin"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_linkedin"
+            android:layout_weight="1"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/contact_IMG_github"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_github"
+            android:layout_weight="1"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/contact_IMG_facebook"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_facebook"
+            android:layout_weight="1"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</RelativeLayout>

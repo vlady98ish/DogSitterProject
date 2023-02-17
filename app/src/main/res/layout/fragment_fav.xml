@@ -4,22 +4,12 @@
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/fav_LBL_fav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Favourite"
-        android:textSize="32sp"
-        android:paddingStart="16dp"
-        android:textStyle="bold"
-        android:textColor="@color/color_text"
-        />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fav_recycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/fav_LBL_fav"
         />
 
 

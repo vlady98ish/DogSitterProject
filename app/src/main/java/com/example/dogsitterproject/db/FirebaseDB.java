@@ -1,19 +1,30 @@
 package com.example.dogsitterproject.db;
 
 import static com.example.dogsitterproject.utils.ConstUtils.DOGS_DATA;
+import static com.example.dogsitterproject.utils.ConstUtils.DOG_IMAGES;
+import static com.example.dogsitterproject.utils.ConstUtils.DOG_PIC_URL;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
 import static com.example.dogsitterproject.utils.ConstUtils.FAVORITE_DATA;
 import static com.example.dogsitterproject.utils.ConstUtils.FAV_IN;
+import static com.example.dogsitterproject.utils.ConstUtils.IMG_FAILED;
+import static com.example.dogsitterproject.utils.ConstUtils.IMG_UPLOADED;
 import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.dogsitterproject.activity.DogRegistration;
+import com.example.dogsitterproject.activity.MainActivity;
+import com.example.dogsitterproject.fragments.UpdateProfileFragment;
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.DogSitter;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,8 +32,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class FirebaseDB {
@@ -158,8 +175,7 @@ public class FirebaseDB {
     }
 
 
-
-    public static void updateFavDog(Dog dog){
+    public static void updateFavDog(Dog dog) {
         DatabaseReference dogRef = FirebaseDatabase
                 .getInstance()
                 .getReference()
@@ -172,7 +188,7 @@ public class FirebaseDB {
     }
 
 
-    public static void updateFavDogSitter(DogSitter dogSitter){
+    public static void updateFavDogSitter(DogSitter dogSitter) {
         DatabaseReference sitterRef = FirebaseDatabase
                 .getInstance()
                 .getReference()
@@ -184,7 +200,7 @@ public class FirebaseDB {
         addFavInToDogSitter(dogSitter);
     }
 
-    public static void removeFromFavDog(Dog dog){
+    public static void removeFromFavDog(Dog dog) {
         FirebaseDatabase
                 .getInstance()
                 .getReference()
@@ -197,7 +213,7 @@ public class FirebaseDB {
         removeFavInToDog(dog);
     }
 
-    public static void removeFromFavDogSitter(DogSitter dogSitter){
+    public static void removeFromFavDogSitter(DogSitter dogSitter) {
         FirebaseDatabase
                 .getInstance()
                 .getReference()
@@ -208,7 +224,6 @@ public class FirebaseDB {
         ;
         removeFavInToDogSitter(dogSitter);
     }
-
 
 
     private static void addFavInToDog(Dog dog) {
@@ -256,7 +271,98 @@ public class FirebaseDB {
     }
 
 
+    public interface CallBack_Update {
+        void updateToStartDogSitter(String nameDb, String emailDb, String passwordDb, String phoneDb, String profilePicture);
 
+        void updateToStartDog(String nameDb, String emailDb, String passwordDb, String phoneDb, String profilePicture, String dogNameDb, String dogWeightDb);
+    }
+
+    public static void getStartData(CallBack_Update callBack_update) {
+
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(USER_DATA)
+                .child(getCurrentId());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child("type").getValue().equals(DOG_SITTER)) {
+                    getInfoDogSitter(snapshot, callBack_update);
+                } else {
+                    getInfoDog(snapshot, callBack_update);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private static void getInfoDogSitter(DataSnapshot snapshot, CallBack_Update callBack_update) {
+        String name = snapshot.child("fullName").getValue(String.class);
+        String email = snapshot.child("email").getValue(String.class);
+        String password = snapshot.child("password").getValue(String.class);
+        String phone = snapshot.child("phone").getValue(String.class);
+        String pictureUrl = snapshot.child("profilepictureurl").getValue(String.class);
+        callBack_update.updateToStartDogSitter(name, email, password, phone, pictureUrl);
+    }
+
+    private static void getInfoDog(DataSnapshot snapshot, CallBack_Update callBack_update) {
+        String name = snapshot.child("fullName").getValue(String.class);
+        String email = snapshot.child("email").getValue(String.class);
+        String password = snapshot.child("password").getValue(String.class);
+        String phone = snapshot.child("phone").getValue(String.class);
+        DatabaseReference dogRef = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(DOGS_DATA)
+                .child(getCurrentId());
+        dogRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String pictureUrl = snapshot.child("dogpictureurl").getValue(String.class);
+                String dogName = snapshot.child("name").getValue(String.class);
+                String dogWeight = snapshot.child("weight").getValue(String.class);
+                callBack_update.updateToStartDog(name, email, password, phone, pictureUrl, dogName, dogWeight);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+
+    public static void updateInfo(String name, String email, String password, String phone) {
+        DatabaseReference dsRef = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(USER_DATA)
+                .child(getCurrentId());
+        dsRef.child("fullName").setValue(name);
+        dsRef.child("email").setValue(email);
+        dsRef.child("password").setValue(password);
+        dsRef.child("phone").setValue(phone);
+    }
+
+    public static void updateDogInfo(String dogName, String dogWeight) {
+        DatabaseReference dsRef = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(DOGS_DATA)
+                .child(getCurrentId());
+        dsRef.child("name").setValue(dogName);
+        dsRef.child("weight").setValue(dogWeight);
+    }
 
 
 }

@@ -11,7 +11,16 @@
         android:id="@+id/menu_favourite"
         android:icon="@drawable/ic_favourite"
         android:title="Favourite"/>
-
+    <item
+        android:id="@+id/menu_profile"
+        android:icon="@drawable/ic_person_update"
+        android:title="Profile"
+        />
+    <item
+        android:id="@+id/menu_aboutUs"
+        android:icon="@drawable/ic_about_us"
+        android:title="About Us"
+        />
 
 
 

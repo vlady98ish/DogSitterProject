@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/update_IMG_logo"
+        android:src="@drawable/img_user_profile"
+        android:layout_centerHorizontal="true"
+
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/update_LIST_change"
+        android:layout_below="@+id/update_IMG_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        >
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/update_LIST_dog"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/update_LBL_dog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dog Info"
+                android:textColor="@color/color_text"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextInputLayoutStyle"
+                app:boxStrokeColor="@color/color_text"
+                app:startIconDrawable="@drawable/ic_person"
+                app:hintTextAppearance="@color/colorPrimary"
+                app:helperTextEnabled="true"
+                android:textColorHint="@color/color_text"
+                android:textSize="22sp"
+                android:layout_marginVertical="8dp"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/update_IN_dogName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:textColor="@color/color_text"
+                    android:inputType="text"
+                    android:hint="Dog Name" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextInputLayoutStyle"
+                app:boxStrokeColor="@color/color_text"
+                app:startIconDrawable="@drawable/ic_weight"
+                app:hintTextAppearance="@color/colorPrimary"
+                app:helperTextEnabled="true"
+                android:textColorHint="@color/color_text"
+                android:textSize="22sp"
+                android:layout_marginVertical="8dp"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/update_IN_dogWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:textColor="@color/color_text"
+                    android:inputType="numberDecimal"
+                    android:hint="Dog Weight" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Info"
+            android:textColor="@color/color_text"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextInputLayoutStyle"
+            app:boxStrokeColor="@color/color_text"
+            app:startIconDrawable="@drawable/ic_person"
+            app:hintTextAppearance="@color/colorPrimary"
+            app:helperTextEnabled="true"
+            android:textColorHint="@color/color_text"
+            android:textSize="22sp"
+            android:layout_marginVertical="8dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/update_IN_Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:textColor="@color/color_text"
+                android:inputType="textPersonName"
+                android:hint="Full Name" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextInputLayoutStyle"
+            app:boxStrokeColor="@color/color_text"
+            app:startIconDrawable="@drawable/ic_mail"
+            app:hintTextAppearance="@color/colorPrimary"
+            app:helperTextEnabled="true"
+            android:textColorHint="@color/color_text"
+            android:textSize="22sp"
+            android:layout_marginVertical="8dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/update_IN_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:textColor="@color/color_text"
+                android:inputType="textEmailAddress"
+                android:hint="E-Mail" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextInputLayoutStyle"
+            app:boxStrokeColor="@color/color_text"
+            app:startIconDrawable="@drawable/ic_number"
+            app:hintTextAppearance="@color/colorPrimary"
+            app:helperTextEnabled="true"
+            android:textColorHint="@color/color_text"
+            android:textSize="22sp"
+            android:layout_marginVertical="8dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/update_IN_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:textColor="@color/color_text"
+                android:inputType="textPassword"
+                android:hint="Password" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextInputLayoutStyle"
+            app:boxStrokeColor="@color/color_text"
+            app:startIconDrawable="@drawable/ic_phone"
+            app:hintTextAppearance="@color/colorPrimary"
+            app:helperTextEnabled="true"
+            android:textColorHint="@color/color_text"
+            android:textSize="22sp"
+            android:layout_marginVertical="8dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/update_IN_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:textColor="@color/color_text"
+                android:inputType="phone"
+                android:hint="Phone No." />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/update_BTN_register"
+        android:layout_alignParentBottom="true"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/button_background"
+        android:text="Update"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:textSize="20sp" />
+
+</RelativeLayout>

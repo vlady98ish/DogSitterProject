@@ -37,8 +37,11 @@ import com.example.dogsitterproject.R;
 
 import com.example.dogsitterproject.calback.CallBackFavClicked;
 
+import com.example.dogsitterproject.db.FirebaseDB;
+import com.example.dogsitterproject.fragments.ContactUsFragment;
 import com.example.dogsitterproject.fragments.FavoriteFragment;
 import com.example.dogsitterproject.fragments.HomeFragment;
+import com.example.dogsitterproject.fragments.UpdateProfileFragment;
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.DogSitter;
 
@@ -78,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private HomeFragment homeFragment;
     private FavoriteFragment favoriteFragment;
+    private UpdateProfileFragment updateProfileFragment;
+    private ContactUsFragment contactUsFragment;
 
     private CircleImageView navigation_IMG_dog;
 
@@ -105,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initFragment() {
         homeFragment = new HomeFragment();
         favoriteFragment = new FavoriteFragment();
+        updateProfileFragment = new UpdateProfileFragment();
+        contactUsFragment = new ContactUsFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragment, homeFragment);
         fragmentTransaction.addToBackStack(null);
@@ -266,11 +273,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 finish();
                 break;
             case R.id.menu_favourite:
+                setTitle("Favourite");
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, favoriteFragment).commit();
                 break;
             case R.id.menu_home:
+                setTitle("Home");
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, homeFragment).commit();
-
+                break;
+            case R.id.menu_profile:
+                setTitle("Profile");
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, updateProfileFragment).commit();
+                break;
+            case R.id.menu_aboutUs:
+                setTitle("Contact Us");
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,contactUsFragment).commit();
+                break;
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);
