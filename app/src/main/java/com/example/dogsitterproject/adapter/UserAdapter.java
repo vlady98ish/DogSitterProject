@@ -73,13 +73,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         return this;
     }
 
-    public SpannableString styleBold(String s) {
-        SpannableString spannableString = new SpannableString(s);
-        int startIndex = 0;
-        int endIndex = s.length();
-        spannableString.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return spannableString;
-    }
+
 
     @NonNull
     @Override
@@ -94,7 +88,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         DogSitter user = getItem(position);
         final boolean favFlag;
         if (fav) {
-            holder.fav_btn.setVisibility(View.GONE);
+            holder.fav_btn.setImageResource(R.drawable.ic_favourite);
+            holder.flag = true;
         } else {
             favFlag = favList.get(position);
             if (favFlag) {

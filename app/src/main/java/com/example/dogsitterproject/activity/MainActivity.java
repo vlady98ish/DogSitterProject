@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-
+    //TODO: Move this to firebase class
     private void updateInfo() {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         reference = FirebaseDatabase.getInstance().getReference().child(USER_DATA).child(
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
-
+    //TODO: Move this to firebase class
     private void updateRecycle() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(MainActivity.this,
                 drawerLayout,
@@ -218,13 +218,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 if (type.equals(DOG_SITTER)) {
                     renderUiDog();
-
-
-                }
-
-                if (type.equals(DOG_OWNER)) {
-
-
                 }
             }
 
@@ -234,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
+    //TODO: Move this to firebase class
     private void getType() {
 
         reference.addListenerForSingleValueEvent(new ValueEventListener() {

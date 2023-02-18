@@ -46,6 +46,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dogsitterproject.R;
+import com.example.dogsitterproject.db.FirebaseRegistration;
 import com.example.dogsitterproject.model.DogSitter;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -295,7 +296,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
                                     .child(USER_DATA)
                                     .child(currentUserId);
 
-                            Map newTypeMap = new HashMap();
+                            HashMap<String,Object>newTypeMap = new HashMap<>();
                             newTypeMap.put(TYPE, DOG_SITTER);
                             DogSitter user = new DogSitter(fullNameEdited,
                                     currentUserId,
@@ -306,33 +307,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
                                     salaryEdited,
                                     "8:00-16:00", "");
 
-                            databaseReference
-                                    .setValue(user)
-                                    .addOnCompleteListener(new OnCompleteListener() {
-                                        @Override
-                                        public void onComplete(@NonNull Task task) {
-                                            if (task.isSuccessful()) {
-                                                databaseReference.updateChildren(newTypeMap);
-                                                Toast
-                                                        .makeText(DogSitterRegistrationActivity.this,
-                                                                USER_SET_SUCCESSFULLY,
-                                                                Toast.LENGTH_SHORT)
-                                                        .show();
-
-                                            } else {
-                                                Toast.makeText(DogSitterRegistrationActivity.this,
-                                                                Objects
-                                                                        .requireNonNull(task
-                                                                                .getException())
-                                                                        .toString(),
-                                                                Toast.LENGTH_SHORT)
-                                                        .show();
-
-                                            }
-
-
-                                        }
-                                    });
+                            FirebaseRegistration.saveDogSitter(user,newTypeMap,DogSitterRegistrationActivity.this);
 
                             saveImage(resultUri, currentUserId);
                         }

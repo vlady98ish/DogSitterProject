@@ -1,13 +1,14 @@
 package com.example.dogsitterproject.fragments;
 
 
+
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
 import static com.example.dogsitterproject.utils.ConstUtils.NO_DOGS;
 import static com.example.dogsitterproject.utils.ConstUtils.NO_DOG_SITTERS;
-import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
-import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
 
+
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -34,12 +35,6 @@ import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.DogSitter;
 import com.example.dogsitterproject.db.FirebaseDB;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -49,7 +44,8 @@ public class HomeFragment extends Fragment {
 
 
     private AppCompatActivity activity;
-
+    private DogAdapter dogAdapter;
+    private ProgressDialog loader;
 
     public HomeFragment setActivity(AppCompatActivity activity) {
         this.activity = activity;
@@ -71,13 +67,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void initViews() {
-//        loader.setMessage("Uploading data...");
-//        loader.setCanceledOnTouchOutside(false);
-//        loader.show();
+        loader = new ProgressDialog(getContext());
+        loader.setMessage("Uploading data...");
+        loader.setCanceledOnTouchOutside(false);
+        loader.show();
         FirebaseDB.CallBack_Data callBack_data = new FirebaseDB.CallBack_Data() {
             @Override
             public void dogDataReady(ArrayList<Dog> dogs, ArrayList<Boolean> flags) {
-                DogAdapter dogAdapter = new DogAdapter(getActivity(), dogs, flags, false);
+                dogAdapter = new DogAdapter(getActivity(), dogs, flags, false);
                 dogAdapter.setCallBack_addToFav(callBack_addToFav);
                 dogAdapter.setCallBackRemoveFromFav(callBackRemoveFromFav);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -86,10 +83,11 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(activity, NO_DOGS, Toast.LENGTH_SHORT).show();
 
                 }
-//                loader.dismiss();
+                loader.dismiss();
 
-                dogAdapter.notifyDataSetChanged();
+
                 recyclerView.setAdapter(dogAdapter);
+                dogAdapter.notifyDataSetChanged();
 
 
             }
@@ -104,11 +102,11 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(activity, NO_DOG_SITTERS, Toast.LENGTH_SHORT).show();
 
                 }
-//                loader.dismiss();
+                loader.dismiss();
 
-                dogSitterAdapter.notifyDataSetChanged();
+
                 recyclerView.setAdapter(dogSitterAdapter);
-
+                dogSitterAdapter.notifyDataSetChanged();
             }
         };
 
@@ -118,30 +116,22 @@ public class HomeFragment extends Fragment {
     }
 
     private void triggerFB(FirebaseDB.CallBack_Data callBack_data) {
-        DatabaseReference userRef = FirebaseDatabase
-                .getInstance()
-                .getReference()
-                .child(USER_DATA)
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDB.CallBack_Type callBack_type = new FirebaseDB.CallBack_Type() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String typeUser = snapshot.child(TYPE).getValue().toString();
-                if (typeUser.equals(DOG_SITTER)) {
+            public void getAll(String type) {
+                if(type.equals(DOG_SITTER)){
                     FirebaseDB.getAllDogs(callBack_data);
-                } else if (typeUser.equals(DOG_OWNER)) {
+                }
+                else if(type.equals(DOG_OWNER)){
                     FirebaseDB.getAllDogSitters(callBack_data);
                 }
-
-
             }
+        };
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        FirebaseDB.getType(callBack_type);
     }
+
+
 
     private void findViews(View view) {
         recyclerView = view.findViewById(R.id.home_recycleView);
@@ -158,28 +148,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-//    CallBackFavClicked callBackFavClicked = new CallBackFavClicked() {
-//        @Override
-//        public void favClicked(Dog dog) {
-//            FirebaseDB.updateFavDog(dog);
-//        }
-//
-//        @Override
-//        public void favClicked(DogSitter dogSitter) {
-//            FirebaseDB.updateFavDogSitter(dogSitter);
-//        }
-//
-//        @Override
-//        public void removeFromFav(Dog item) {
-//            FirebaseDB.removeFromFavDog(item);
-//
-//        }
-//
-//        @Override
-//        public void removeFromFav(DogSitter dogSitter) {
-//            FirebaseDB.removeFromFavDogSitter(dogSitter);
-//        }
-//    };
 
 
     CallBack_AddToFav callBack_addToFav = new CallBack_AddToFav() {

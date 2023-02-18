@@ -6,14 +6,14 @@ import static com.example.dogsitterproject.utils.ConstUtils.DOGS_DATA;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_IMAGES;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_PIC_URL;
-import static com.example.dogsitterproject.utils.ConstUtils.DOG_SET_SUCCESSFULLY;
+
 import static com.example.dogsitterproject.utils.ConstUtils.IMAGE;
 import static com.example.dogsitterproject.utils.ConstUtils.IMG_FAILED;
 import static com.example.dogsitterproject.utils.ConstUtils.IMG_UPLOADED;
 import static com.example.dogsitterproject.utils.ConstUtils.PICK_IMAGE_REQUEST;
 import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
-import static com.example.dogsitterproject.utils.ConstUtils.USER_SET_SUCCESSFULLY;
+
 import static com.example.dogsitterproject.utils.ConstUtils.EMAIL_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.FULL_NAME_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.KEY_USER;
@@ -41,16 +41,17 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.dogsitterproject.R;
+import com.example.dogsitterproject.db.FirebaseRegistration;
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -234,7 +235,7 @@ public class DogRegistration extends AppCompatActivity {
                                     String downloadUrl = uri.toString();
                                     Map newImageMap = new HashMap();
                                     newImageMap.put(DOG_PIC_URL, downloadUrl);
-                                    dogReference.updateChildren(newImageMap);
+                                    dogReference.child(currentUserId).updateChildren(newImageMap);
 
                                     Toast
                                             .makeText(
@@ -283,92 +284,33 @@ public class DogRegistration extends AppCompatActivity {
 
         mAuth
                 .createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        String currentUserId = mAuth.getCurrentUser().getUid();
-                        user.setId(currentUserId);
-                        if (!task.isSuccessful()) {
-                            String error = task.getException().toString();
-                            //TODO: Toast to class
-                            Toast.makeText(DogRegistration.this, "Error"
-                                    + error, Toast.LENGTH_SHORT).show();
-                        } else {
-
-                            reference = reference
-                                    .child(currentUserId);
-
-                            Map newTypeMap = new HashMap();
-                            newTypeMap.put(TYPE, DOG_OWNER);
+                .addOnCompleteListener(task -> {
+                    String currentUserId = mAuth.getCurrentUser().getUid();
+                    user.setId(currentUserId);
+                    if (!task.isSuccessful()) {
+                        String error = task.getException().toString();
+                        //TODO: Toast to class
+                        Toast.makeText(DogRegistration.this, "Error"
+                                + error, Toast.LENGTH_SHORT).show();
+                    } else {
 
 
-                            reference
-                                    .setValue(user)
-                                    .addOnCompleteListener(new OnCompleteListener() {
-                                        @Override
-                                        public void onComplete(@NonNull Task task) {
-                                            if (task.isSuccessful()) {
-                                                reference.updateChildren(newTypeMap);
-                                                Toast
-                                                        .makeText(DogRegistration.this,
-                                                                USER_SET_SUCCESSFULLY,
-                                                                Toast.LENGTH_SHORT)
-                                                        .show();
+                        HashMap<String, Object> newTypeMap = new HashMap<>();
+                        newTypeMap.put(TYPE, DOG_OWNER);
 
 
-                                            } else {
-                                                Toast.makeText(DogRegistration.this,
-                                                                Objects
-                                                                        .requireNonNull(task
-                                                                                .getException())
-                                                                        .toString(),
-                                                                Toast.LENGTH_SHORT)
-                                                        .show();
+                        Dog dog = new Dog(nameEdited,
+                                currentUserId,
+                                ganderEdited,
+                                ageEdited,
+                                breedEdited,
+                                weightEdited, "",
+                                user.getPhone());
 
-                                            }
 
-                                            finish();
+                        FirebaseRegistration.saveData(user, newTypeMap, dog, DogRegistration.this);
+                        saveImage(resultUri, currentUserId);
 
-                                        }
-                                    });
-                            Dog dog = new Dog(nameEdited,
-                                    currentUserId,
-                                    ganderEdited,
-                                    ageEdited,
-                                    breedEdited,
-                                    weightEdited, "",
-                                    user.getPhone());
-                            dogReference = dogReference
-                                    .child(currentUserId);
-                            dogReference
-                                    .setValue(dog)
-                                    .addOnCompleteListener(new OnCompleteListener() {
-                                        @Override
-                                        public void onComplete(@NonNull Task task) {
-                                            if (task.isSuccessful()) {
-
-                                                Toast
-                                                        .makeText(DogRegistration.this,
-                                                                DOG_SET_SUCCESSFULLY,
-                                                                Toast.LENGTH_SHORT)
-                                                        .show();
-
-                                            } else {
-                                                Toast.makeText(DogRegistration.this,
-                                                                Objects
-                                                                        .requireNonNull(task
-                                                                                .getException())
-                                                                        .toString(),
-                                                                Toast.LENGTH_SHORT)
-                                                        .show();
-
-                                            }
-
-                                        }
-                                    });
-                            saveImage(resultUri, currentUserId);
-
-                        }
                     }
                 });
     }
