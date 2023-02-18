@@ -17,9 +17,9 @@
         android:title="Profile"
         />
     <item
-        android:id="@+id/menu_aboutUs"
+        android:id="@+id/menu_contactUs"
         android:icon="@drawable/ic_about_us"
-        android:title="About Us"
+        android:title="Contact Us"
         />
 
 

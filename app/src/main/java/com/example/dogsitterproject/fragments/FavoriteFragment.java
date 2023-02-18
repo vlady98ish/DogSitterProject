@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dogsitterproject.R;
 import com.example.dogsitterproject.adapter.DogAdapter;
 import com.example.dogsitterproject.adapter.UserAdapter;
+import com.example.dogsitterproject.calback.CallBack_RemoveFromFav;
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.DogSitter;
 import com.example.dogsitterproject.db.FirebaseDB;
@@ -59,6 +60,7 @@ public class FavoriteFragment extends Fragment {
             @Override
             public void dogDataReady(ArrayList<Dog> dogs) {
                 DogAdapter dogAdapter = new DogAdapter(getActivity(), dogs, true);
+                dogAdapter.setCallBackRemoveFromFav(removeFromFav);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
 
                 if (dogs.isEmpty()) {
@@ -130,4 +132,16 @@ public class FavoriteFragment extends Fragment {
             }
         });
     }
+
+    CallBack_RemoveFromFav removeFromFav = new CallBack_RemoveFromFav() {
+        @Override
+        public void removeDogFromFav(Dog item) {
+            FirebaseDB.removeFromFavDog(item);
+        }
+
+        @Override
+        public void removeDogSitterFromFav(DogSitter dogSitter) {
+            FirebaseDB.removeFromFavDogSitter(dogSitter);
+        }
+    };
 }

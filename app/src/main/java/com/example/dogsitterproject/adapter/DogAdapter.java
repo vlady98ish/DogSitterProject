@@ -22,7 +22,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogsitterproject.R;
-import com.example.dogsitterproject.calback.CallBackFavClicked;
+import com.example.dogsitterproject.calback.CallBack_AddToFav;
+import com.example.dogsitterproject.calback.CallBack_RemoveFromFav;
 import com.example.dogsitterproject.model.Dog;
 
 
@@ -39,7 +40,8 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     private List<Dog> dogsList;
 
     private List<Boolean> favList;
-    private CallBackFavClicked callBackFavClicked;
+    private CallBack_RemoveFromFav callBackRemoveFromFav;
+    private CallBack_AddToFav callBack_addToFav;
 
     private boolean fav = false;
 
@@ -57,8 +59,13 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
         this.fav = fav;
     }
 
-    public DogAdapter setCallBackDog(CallBackFavClicked callBackFavClicked) {
-        this.callBackFavClicked = callBackFavClicked;
+    public DogAdapter setCallBackRemoveFromFav(CallBack_RemoveFromFav callBackRemoveFromFav) {
+        this.callBackRemoveFromFav = callBackRemoveFromFav;
+        return this;
+    }
+
+    public DogAdapter setCallBack_addToFav(CallBack_AddToFav callBack_addToFav) {
+        this.callBack_addToFav = callBack_addToFav;
         return this;
     }
 
@@ -79,7 +86,8 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
         final Dog dog = dogsList.get(position);
         final boolean favFlag;
         if (fav) {
-            holder.fav_btn.setVisibility(View.GONE);
+            holder.fav_btn.setImageResource(R.drawable.ic_favourite);
+            holder.flag = true;
         } else {
             favFlag = favList.get(position);
             if (favFlag) {
@@ -138,10 +146,10 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
             fav_btn.setOnClickListener(v -> {
                 flag = !flag;
                 if (flag) {
-                    callBackFavClicked.favClicked(getItem(getAdapterPosition()));
+                    callBack_addToFav.addDogToFav(getItem(getAdapterPosition()));
                     fav_btn.setImageResource(R.drawable.ic_favourite);
                 } else {
-                    callBackFavClicked.removeFromFav(getItem(getAdapterPosition()));
+                    callBackRemoveFromFav.removeDogFromFav(getItem(getAdapterPosition()));
                     fav_btn.setImageResource(R.drawable.ic_favorite_border);
                 }
             });

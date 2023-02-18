@@ -2,10 +2,100 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp">
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextInputLayoutStyle"
+            app:boxStrokeColor="@color/color_text"
+            app:startIconDrawable="@drawable/ic_person"
+            app:hintTextAppearance="@color/colorPrimary"
+            app:helperTextEnabled="true"
+            android:textColorHint="@color/color_text"
+            android:textSize="22sp"
+            android:layout_marginVertical="8dp"
+            >
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/contact_IN_Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:textColor="@color/color_text"
+                android:inputType="textPersonName"
+                android:hint="Name" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextInputLayoutStyle"
+            app:boxStrokeColor="@color/color_text"
+            app:startIconDrawable="@drawable/ic_email"
+            app:hintTextAppearance="@color/colorPrimary"
+            app:helperTextEnabled="true"
+            android:textColorHint="@color/color_text"
+            android:textSize="22sp"
+            android:layout_marginVertical="8dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/contact_IN_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:textColor="@color/color_text"
+                android:inputType="text"
+                android:hint="Subject" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextInputLayoutStyle"
+            app:boxStrokeColor="@color/color_text"
+            app:hintTextAppearance="@color/colorPrimary"
+            app:helperTextEnabled="true"
+            android:textColorHint="@color/color_text"
+            android:textSize="22sp"
+            android:layout_marginVertical="8dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/contact_IN_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:textColor="@color/color_text"
+                android:gravity="top"
+                android:lines="5"
+                android:inputType="textMultiLine"
+                android:hint="Message" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/contact_BTN_send"
+            android:layout_alignParentBottom="true"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/button_background"
+            android:text="Send"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:layout_marginVertical="8dp"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 
@@ -17,25 +107,25 @@
 
         >
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/contact_IMG_linkedin"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:src="@drawable/ic_linkedin"
+            android:id="@+id/contact_IMG_whatsapp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_whatsapp"
             android:layout_weight="1"
             />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/contact_IMG_github"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:src="@drawable/ic_github"
+            android:id="@+id/contact_IMG_telegram"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_telegram"
             android:layout_weight="1"
             />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/contact_IMG_facebook"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic_facebook"
             android:layout_weight="1"
             />

@@ -1,17 +1,10 @@
 package com.example.dogsitterproject.fragments;
 
 import static com.example.dogsitterproject.utils.ConstUtils.EMAIL_REQUIRED;
-import static com.example.dogsitterproject.utils.ConstUtils.FULL_NAME_REQUIRED;
-import static com.example.dogsitterproject.utils.ConstUtils.IMAGE;
-import static com.example.dogsitterproject.utils.ConstUtils.LENGTH_PASSWORD;
+
 import static com.example.dogsitterproject.utils.ConstUtils.PASSWORD_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.PHONE_REQUIRED;
-import static com.example.dogsitterproject.utils.ConstUtils.PICK_IMAGE_REQUEST;
-import static com.example.dogsitterproject.utils.ConstUtils.REGISTERING_LOADER;
-import static com.example.dogsitterproject.utils.ConstUtils.SALARY_REQUIRED;
-import static com.example.dogsitterproject.utils.ConstUtils.SELECT_PICTURE;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.text.TextUtils;

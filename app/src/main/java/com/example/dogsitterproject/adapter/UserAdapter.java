@@ -26,7 +26,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogsitterproject.R;
-import com.example.dogsitterproject.calback.CallBackFavClicked;
+import com.example.dogsitterproject.calback.CallBack_AddToFav;
+import com.example.dogsitterproject.calback.CallBack_RemoveFromFav;
 import com.example.dogsitterproject.model.DogSitter;
 
 
@@ -42,7 +43,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private List<DogSitter> userList;
 
     private List<Boolean> favList;
-    private CallBackFavClicked callBackFavClicked;
+    private CallBack_AddToFav callBack_addToFav;
+    private CallBack_RemoveFromFav callBackRemoveFromFav;
 
     private boolean fav = false;
 
@@ -61,10 +63,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     }
 
-    public UserAdapter setCallBackDogSitter(CallBackFavClicked callBackFavClicked) {
-        this.callBackFavClicked = callBackFavClicked;
+    public UserAdapter setCallBack_addToFav(CallBack_AddToFav callBack_addToFav) {
+        this.callBack_addToFav = callBack_addToFav;
         return this;
+    }
 
+    public UserAdapter setCallBackRemoveFromFav(CallBack_RemoveFromFav callBackRemoveFromFav) {
+        this.callBackRemoveFromFav = callBackRemoveFromFav;
+        return this;
     }
 
     public SpannableString styleBold(String s) {
@@ -152,11 +158,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             fav_btn.setOnClickListener(v -> {
                 flag = !flag;
                 if (flag) {
-                    callBackFavClicked.favClicked(getItem(getAdapterPosition()));
+                    callBack_addToFav.addDogSitterToFav(getItem(getAdapterPosition()));
                     fav_btn.setImageResource(R.drawable.ic_favourite);
 
                 } else {
-                    callBackFavClicked.removeFromFav(getItem(getAdapterPosition()));
+                    callBackRemoveFromFav.removeDogSitterFromFav(getItem(getAdapterPosition()));
                     fav_btn.setImageResource(R.drawable.ic_favorite_border);
                 }
             });

@@ -35,15 +35,11 @@ import android.widget.TextView;
 
 import com.example.dogsitterproject.R;
 
-import com.example.dogsitterproject.calback.CallBackFavClicked;
-
-import com.example.dogsitterproject.db.FirebaseDB;
 import com.example.dogsitterproject.fragments.ContactUsFragment;
 import com.example.dogsitterproject.fragments.FavoriteFragment;
 import com.example.dogsitterproject.fragments.HomeFragment;
 import com.example.dogsitterproject.fragments.UpdateProfileFragment;
 import com.example.dogsitterproject.model.Dog;
-import com.example.dogsitterproject.model.DogSitter;
 
 import com.example.dogsitterproject.utils.ImageUtils;
 import com.google.android.material.navigation.NavigationView;
@@ -284,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setTitle("Profile");
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, updateProfileFragment).commit();
                 break;
-            case R.id.menu_aboutUs:
+            case R.id.menu_contactUs:
                 setTitle("Contact Us");
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,contactUsFragment).commit();
                 break;

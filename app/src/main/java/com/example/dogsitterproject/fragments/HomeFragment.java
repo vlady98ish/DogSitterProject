@@ -1,6 +1,6 @@
 package com.example.dogsitterproject.fragments;
 
-import static com.example.dogsitterproject.utils.ConstUtils.DOGS_DATA;
+
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
 import static com.example.dogsitterproject.utils.ConstUtils.NO_DOGS;
@@ -9,8 +9,7 @@ import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +28,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dogsitterproject.R;
 import com.example.dogsitterproject.adapter.DogAdapter;
 import com.example.dogsitterproject.adapter.UserAdapter;
-import com.example.dogsitterproject.calback.CallBackFavClicked;
+import com.example.dogsitterproject.calback.CallBack_AddToFav;
+import com.example.dogsitterproject.calback.CallBack_RemoveFromFav;
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.DogSitter;
 import com.example.dogsitterproject.db.FirebaseDB;
-import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +42,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -78,7 +78,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void dogDataReady(ArrayList<Dog> dogs, ArrayList<Boolean> flags) {
                 DogAdapter dogAdapter = new DogAdapter(getActivity(), dogs, flags, false);
-                dogAdapter.setCallBackDog(callBackFavClicked);
+                dogAdapter.setCallBack_addToFav(callBack_addToFav);
+                dogAdapter.setCallBackRemoveFromFav(callBackRemoveFromFav);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
 
                 if (dogs.isEmpty()) {
@@ -96,7 +97,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void dogSittersDataReady(ArrayList<DogSitter> dogSitters, ArrayList<Boolean> flags) {
                 UserAdapter dogSitterAdapter = new UserAdapter(getActivity(), dogSitters, flags, false);
-                dogSitterAdapter.setCallBackDogSitter(callBackFavClicked);
+                dogSitterAdapter.setCallBack_addToFav(callBack_addToFav);
+                dogSitterAdapter.setCallBackRemoveFromFav(callBackRemoveFromFav);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 if (dogSitters.isEmpty()) {
                     Toast.makeText(activity, NO_DOG_SITTERS, Toast.LENGTH_SHORT).show();
@@ -156,25 +158,51 @@ public class HomeFragment extends Fragment {
     }
 
 
-    CallBackFavClicked callBackFavClicked = new CallBackFavClicked() {
+//    CallBackFavClicked callBackFavClicked = new CallBackFavClicked() {
+//        @Override
+//        public void favClicked(Dog dog) {
+//            FirebaseDB.updateFavDog(dog);
+//        }
+//
+//        @Override
+//        public void favClicked(DogSitter dogSitter) {
+//            FirebaseDB.updateFavDogSitter(dogSitter);
+//        }
+//
+//        @Override
+//        public void removeFromFav(Dog item) {
+//            FirebaseDB.removeFromFavDog(item);
+//
+//        }
+//
+//        @Override
+//        public void removeFromFav(DogSitter dogSitter) {
+//            FirebaseDB.removeFromFavDogSitter(dogSitter);
+//        }
+//    };
+
+
+    CallBack_AddToFav callBack_addToFav = new CallBack_AddToFav() {
         @Override
-        public void favClicked(Dog dog) {
+        public void addDogToFav(Dog dog) {
             FirebaseDB.updateFavDog(dog);
         }
 
         @Override
-        public void favClicked(DogSitter dogSitter) {
+        public void addDogSitterToFav(DogSitter dogSitter) {
             FirebaseDB.updateFavDogSitter(dogSitter);
         }
+    };
 
+
+    CallBack_RemoveFromFav callBackRemoveFromFav = new CallBack_RemoveFromFav() {
         @Override
-        public void removeFromFav(Dog item) {
+        public void removeDogFromFav(Dog item) {
             FirebaseDB.removeFromFavDog(item);
-
         }
 
         @Override
-        public void removeFromFav(DogSitter dogSitter) {
+        public void removeDogSitterFromFav(DogSitter dogSitter) {
             FirebaseDB.removeFromFavDogSitter(dogSitter);
         }
     };
