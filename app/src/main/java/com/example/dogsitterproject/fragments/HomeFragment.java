@@ -4,11 +4,14 @@ package com.example.dogsitterproject.fragments;
 
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
+import static com.example.dogsitterproject.utils.ConstUtils.KEY_USER;
 import static com.example.dogsitterproject.utils.ConstUtils.NO_DOGS;
 import static com.example.dogsitterproject.utils.ConstUtils.NO_DOG_SITTERS;
+import static com.example.dogsitterproject.utils.ConstUtils.UPLOAD_DATA;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -27,10 +30,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogsitterproject.R;
+import com.example.dogsitterproject.activity.FullDescriptionActivity;
 import com.example.dogsitterproject.adapter.DogAdapter;
 import com.example.dogsitterproject.adapter.UserAdapter;
 import com.example.dogsitterproject.calback.CallBack_AddToFav;
 import com.example.dogsitterproject.calback.CallBack_RemoveFromFav;
+import com.example.dogsitterproject.calback.OnClickItemRecycleView;
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.DogSitter;
 import com.example.dogsitterproject.db.FirebaseDB;
@@ -68,7 +73,7 @@ public class HomeFragment extends Fragment {
 
     private void initViews() {
         loader = new ProgressDialog(getContext());
-        loader.setMessage("Uploading data...");
+        loader.setMessage(UPLOAD_DATA);
         loader.setCanceledOnTouchOutside(false);
         loader.show();
         FirebaseDB.CallBack_Data callBack_data = new FirebaseDB.CallBack_Data() {
@@ -80,7 +85,7 @@ public class HomeFragment extends Fragment {
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
 
                 if (dogs.isEmpty()) {
-                    Toast.makeText(activity, NO_DOGS, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), NO_DOGS, Toast.LENGTH_SHORT).show();
 
                 }
                 loader.dismiss();
@@ -97,9 +102,10 @@ public class HomeFragment extends Fragment {
                 UserAdapter dogSitterAdapter = new UserAdapter(getActivity(), dogSitters, flags, false);
                 dogSitterAdapter.setCallBack_addToFav(callBack_addToFav);
                 dogSitterAdapter.setCallBackRemoveFromFav(callBackRemoveFromFav);
+                dogSitterAdapter.setOnClickItemRecycleView(onClickItemRecycleView);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 if (dogSitters.isEmpty()) {
-                    Toast.makeText(activity, NO_DOG_SITTERS, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), NO_DOG_SITTERS, Toast.LENGTH_SHORT).show();
 
                 }
                 loader.dismiss();
@@ -116,15 +122,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void triggerFB(FirebaseDB.CallBack_Data callBack_data) {
-        FirebaseDB.CallBack_Type callBack_type = new FirebaseDB.CallBack_Type() {
-            @Override
-            public void getAll(String type) {
-                if(type.equals(DOG_SITTER)){
-                    FirebaseDB.getAllDogs(callBack_data);
-                }
-                else if(type.equals(DOG_OWNER)){
-                    FirebaseDB.getAllDogSitters(callBack_data);
-                }
+        FirebaseDB.CallBack_Type callBack_type = type -> {
+            if(type.equals(DOG_SITTER)){
+                FirebaseDB.getAllDogs(callBack_data);
+            }
+            else if(type.equals(DOG_OWNER)){
+                FirebaseDB.getAllDogSitters(callBack_data);
             }
         };
 
@@ -173,6 +176,12 @@ public class HomeFragment extends Fragment {
         public void removeDogSitterFromFav(DogSitter dogSitter) {
             FirebaseDB.removeFromFavDogSitter(dogSitter);
         }
+    };
+
+    OnClickItemRecycleView onClickItemRecycleView = dogSitter -> {
+        Intent intent = new Intent(getActivity(), FullDescriptionActivity.class);
+        intent.putExtra(KEY_USER, dogSitter);
+        startActivity(intent);
     };
 
 

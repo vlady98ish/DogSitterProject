@@ -1,15 +1,11 @@
 package com.example.dogsitterproject.activity;
 
-import static com.example.dogsitterproject.utils.ConstUtils.CITY;
-import static com.example.dogsitterproject.utils.ConstUtils.DOGS_DATA;
-import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
 
+import static com.example.dogsitterproject.utils.ConstUtils.CONTACT_US;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
-import static com.example.dogsitterproject.utils.ConstUtils.EMAIL;
-import static com.example.dogsitterproject.utils.ConstUtils.FULL_NAME;
-import static com.example.dogsitterproject.utils.ConstUtils.PHONE;
-import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
-import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
+import static com.example.dogsitterproject.utils.ConstUtils.FAVOURITE;
+import static com.example.dogsitterproject.utils.ConstUtils.HOME;
+import static com.example.dogsitterproject.utils.ConstUtils.PROFILE;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -24,7 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 
 import android.os.Bundle;
-import android.util.Log;
+
 
 import android.view.MenuItem;
 import android.view.View;
@@ -35,20 +31,21 @@ import android.widget.TextView;
 
 import com.example.dogsitterproject.R;
 
+
+import com.example.dogsitterproject.db.FirebaseDB;
 import com.example.dogsitterproject.fragments.ContactUsFragment;
 import com.example.dogsitterproject.fragments.FavoriteFragment;
 import com.example.dogsitterproject.fragments.HomeFragment;
 import com.example.dogsitterproject.fragments.UpdateProfileFragment;
 import com.example.dogsitterproject.model.Dog;
 
+
+import com.example.dogsitterproject.model.User;
 import com.example.dogsitterproject.utils.ImageUtils;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -82,14 +79,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private CircleImageView navigation_IMG_dog;
 
-    private DatabaseReference reference;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        setTitle(HOME);
         initFragment();
 
         findViews();
@@ -143,65 +140,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    //TODO: Move this to firebase class
+
     private void updateInfo() {
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        reference = FirebaseDatabase.getInstance().getReference().child(USER_DATA).child(
-                FirebaseAuth.getInstance().getCurrentUser().getUid()
-        );
-        getType();
-        DatabaseReference dogRef = db.getReference(DOGS_DATA);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        FirebaseDB.CallBack_GetInfo callBack_getInfo = new FirebaseDB.CallBack_GetInfo() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String name = snapshot.child(FULL_NAME).getValue().toString();
-                    userName.setText(name);
-                    String city = snapshot.child(CITY).getValue().toString();
-                    userCity.setText(city);
-                    String phone = snapshot.child(PHONE).getValue().toString();
-                    userPhone.setText(phone);
-                    String email = snapshot.child(EMAIL).getValue().toString();
-                    userEmail.setText(email);
-                    if (typeUser.equals(DOG_OWNER)) {
-                        dogRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                Dog dog = snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue(Dog.class);
-
-                                String dog_name = dog.getName();
-                                dogName.setText(dog_name);
-                                String dog_type = dog.getBreed();
-                                dogType.setText(dog_type);
-                                String dog_year = dog.getAge();
-                                dogYear.setText(dog_year + " Years old");
-                                String dog_weight = dog.getWeight();
-                                dogWeight.setText(dog_weight + " Kg");
-                                String photoLink = dog.getDogpictureurl();
-                                Log.d("ptttt", photoLink);
-                                ImageUtils.getInstance().load(photoLink, navigation_IMG_dog);
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    }
-
-                }
+            public void setInfoUser(User user) {
+                String name = user.getFullName();
+                userName.setText(name);
+                String city = user.getCity();
+                userCity.setText(city);
+                String phone = user.getPhone();
+                userPhone.setText(phone);
+                String email = user.getEmail();
+                userEmail.setText(email);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void setInfoDog(Dog dog) {
+                String dog_name = dog.getName();
+                dogName.setText(dog_name);
+                String dog_type = dog.getBreed();
+                dogType.setText(dog_type);
+                String dog_year = dog.getAge();
+                dogYear.setText(dog_year + " Years old");
+                String dog_weight = dog.getWeight();
+                dogWeight.setText(dog_weight + " Kg");
+                String photoLink = dog.getProfilepictureurl();
+                ImageUtils.getInstance().load(photoLink, navigation_IMG_dog);
 
             }
-        });
-
+        };
+        FirebaseDB.getInfo(callBack_getInfo);
 
     }
-    //TODO: Move this to firebase class
+
     private void updateRecycle() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(MainActivity.this,
                 drawerLayout,
@@ -211,37 +184,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String type = snapshot.child(TYPE).getValue().toString();
 
-                if (type.equals(DOG_SITTER)) {
-                    renderUiDog();
-                }
+        FirebaseDB.CallBack_Type callBack_type = type -> {
+            if (type.equals(DOG_SITTER)) {
+                renderUiDog();
             }
+        };
+        FirebaseDB.getType(callBack_type);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-    //TODO: Move this to firebase class
-    private void getType() {
-
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                typeUser = snapshot.child(TYPE).getValue().toString();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
 
@@ -256,26 +206,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent;
         switch (item.getItemId()) {
             case R.id.menu_logOut:
-                intent = new Intent(MainActivity.this, AutintificateActivity.class);
-                startActivity(intent);
                 FirebaseAuth.getInstance().signOut();
+                intent = new Intent(MainActivity.this, AutintificateActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
                 finish();
                 break;
             case R.id.menu_favourite:
-                setTitle("Favourite");
+                setTitle(FAVOURITE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, favoriteFragment).commit();
                 break;
             case R.id.menu_home:
-                setTitle("Home");
+                setTitle(HOME);
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, homeFragment).commit();
                 break;
             case R.id.menu_profile:
-                setTitle("Profile");
+                setTitle(PROFILE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, updateProfileFragment).commit();
                 break;
             case R.id.menu_contactUs:
-                setTitle("Contact Us");
-                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,contactUsFragment).commit();
+                setTitle(CONTACT_US);
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, contactUsFragment).commit();
                 break;
 
         }

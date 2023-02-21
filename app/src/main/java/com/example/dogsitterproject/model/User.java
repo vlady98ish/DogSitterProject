@@ -4,7 +4,7 @@ package com.example.dogsitterproject.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private String fullName, id, email, phone, password, city;
+    private String fullName, id, email, phone, password, city,type;
 
 
     public User() {
@@ -40,6 +40,14 @@ public class User implements Serializable {
         return this;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public User setType(String type) {
+        this.type = type;
+        return this;
+    }
 
     public String getEmail() {
         return email;

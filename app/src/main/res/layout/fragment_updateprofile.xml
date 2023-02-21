@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,13 +8,13 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/update_IMG_logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:id="@+id/update_IMG_logo"
-        android:src="@drawable/img_user_profile"
         android:layout_centerHorizontal="true"
+        android:src="@drawable/img_user_profile"
 
-        />
+        tools:ignore="ImageContrastCheck" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -196,6 +197,21 @@
                 android:inputType="phone"
                 android:hint="Phone No." />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/update_BTN_uploadPhoto"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/button_background"
+            android:paddingHorizontal="8dp"
+            android:text="Upload Photos"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

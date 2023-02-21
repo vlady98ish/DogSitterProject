@@ -8,6 +8,7 @@ import android.content.Context;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,7 +101,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
         holder.dog_breed.setText(dog.getBreed());
         holder.dog_age.setText(dog.getAge() + " Years");
         holder.dog_weight.setText(dog.getWeight() + " Kg");
-        String photoLink = dog.getDogpictureurl();
+        String photoLink = dog.getProfilepictureurl();
         ImageUtils.getInstance().load(photoLink, holder.photo);
 
 
@@ -132,11 +133,15 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
         }
 
         public void findViews() {
+
             photo = itemView.findViewById(R.id.user_view_IMG_photo);
             dog_name = itemView.findViewById(R.id.user_view_name);
             dog_breed = itemView.findViewById(R.id.user_view_city);
+            dog_breed.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_breed_orange,0,0,0);
             dog_age = itemView.findViewById(R.id.user_view_time);
+            dog_age.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_calendar_orange,0,0,0);
             dog_weight = itemView.findViewById(R.id.user_view_price);
+            dog_weight.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_weight_orange,0,0,0);
             fav_btn = itemView.findViewById(R.id.user_view_BTN_fav);
             chatBtn = itemView.findViewById(R.id.user_view_BTN_chat);
 

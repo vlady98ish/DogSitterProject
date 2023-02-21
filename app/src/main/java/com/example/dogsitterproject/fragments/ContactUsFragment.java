@@ -2,6 +2,10 @@ package com.example.dogsitterproject.fragments;
 
 import static com.example.dogsitterproject.utils.ConstUtils.EMAIL_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.FULL_NAME_REQUIRED;
+import static com.example.dogsitterproject.utils.ConstUtils.MESSAGE_REQUIRED;
+import static com.example.dogsitterproject.utils.ConstUtils.SEND_EMAIL;
+import static com.example.dogsitterproject.utils.ConstUtils.TELEGRAM_NOT_INSTALLED;
+import static com.example.dogsitterproject.utils.ConstUtils.WHATSAPP_NOT_INSTALLED;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +15,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +23,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.dogsitterproject.R;
+import com.example.dogsitterproject.utils.MySignal;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class ContactUsFragment extends Fragment {
@@ -52,57 +56,45 @@ public class ContactUsFragment extends Fragment {
 
 
     private void init(){
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nameMessage = name.getText().toString().trim();
-                String subjectMessage = subject.getText().toString().trim();
-                String editedMessage = message.getText().toString().trim();
-                checkerSender(nameMessage,subjectMessage,editedMessage);
-            }
+        sendBtn.setOnClickListener(v -> {
+            String nameMessage = name.getText().toString().trim();
+            String subjectMessage = subject.getText().toString().trim();
+            String editedMessage = message.getText().toString().trim();
+            checkerSender(nameMessage,subjectMessage,editedMessage);
         });
-        whatsapp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String contact = "+972585266174"; // use country code with your phone number
-                String url = "https://api.whatsapp.com/send?phone=" + contact;
-                try {
-                    PackageManager pm = v.getContext().getPackageManager();
-                    pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
-                } catch (PackageManager.NameNotFoundException e) {
-                    Toast.makeText(getActivity(), "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-            }
-        });
-        telegram.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        whatsapp.setOnClickListener(v -> {
+            String contact = "+972585266174";
+            String url = "https://api.whatsapp.com/send?phone=" + contact;
+            try {
+                PackageManager pm = v.getContext().getPackageManager();
+                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
                 Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("http://telegram.me/vladiAfeka"));
-                final String appName = "org.telegram.messenger";
-
-                    if (isAppAvailable(v.getContext(), appName)) {
-                        i.setPackage(appName);
-                        startActivity(i);
-                    }
-                    else{
-                        Toast.makeText(getActivity(), "Telegram app not installed in your phone", Toast.LENGTH_SHORT).show();
-                    }
-
-
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            } catch (PackageManager.NameNotFoundException e) {
+                MySignal.getInstance().toast(WHATSAPP_NOT_INSTALLED);
+                e.printStackTrace();
             }
         });
-        facebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse("http://www.facebook.com/vladislav.ishchenko.9"); // missing 'http://' will cause crashed
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
+        telegram.setOnClickListener(v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse("http://telegram.me/vladiAfeka"));
+            final String appName = "org.telegram.messenger";
+
+                if (isAppAvailable(v.getContext(), appName)) {
+                    i.setPackage(appName);
+                    startActivity(i);
+                }
+                else{
+                    MySignal.getInstance().toast(TELEGRAM_NOT_INSTALLED);
+                }
+
+
+        });
+        facebook.setOnClickListener(v -> {
+            Uri uri = Uri.parse("http://www.facebook.com/vladislav.ishchenko.9");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
     }
     private boolean isAppAvailable(Context context, String appName){
@@ -128,8 +120,7 @@ public class ContactUsFragment extends Fragment {
             subject.requestFocus();
         }
         else if(editedMessage.isEmpty()){
-            //TODO: MESSAGE REQUIRED
-            message.setError(EMAIL_REQUIRED);
+            message.setError(MESSAGE_REQUIRED);
             message.requestFocus();
         }
         else{
@@ -139,7 +130,7 @@ public class ContactUsFragment extends Fragment {
 
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse(mail));
-            startActivity(Intent.createChooser(intent, "Send email...."));
+            startActivity(Intent.createChooser(intent, SEND_EMAIL));
         }
     }
 }

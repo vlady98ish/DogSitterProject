@@ -1,21 +1,35 @@
 package com.example.dogsitterproject.model;
 
-public class DogSitter extends User {
+import android.net.Uri;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+
+public class DogSitter extends User implements Serializable {
 
     public DogSitter() {
     }
-
+    ArrayList<String> dogSitterImages = new ArrayList<>();
     private String salary;
-    private String available;
+    private String description;
     private String profilepictureurl;
 
-    public DogSitter(String fullName, String id, String city, String email, String phone, String password, String salary, String available, String profilepictureurl) {
+    public DogSitter(String fullName, String id, String city, String email, String phone, String password, String salary,String profilepictureurl,String description) {
         super(fullName, id, city, email, phone, password);
         this.salary = salary;
-        this.available = available;
-        this.profilepictureurl = profilepictureurl;
+        this.description = description;
     }
 
+
+    public ArrayList<String> getDogSitterImages() {
+        return dogSitterImages;
+    }
+
+    public DogSitter setDogSitterImages(ArrayList<String> dogSitterImages) {
+        this.dogSitterImages = dogSitterImages;
+        return this;
+    }
 
     public String getProfilepictureurl() {
         return profilepictureurl;
@@ -35,12 +49,12 @@ public class DogSitter extends User {
         return this;
     }
 
-    public String getAvailable() {
-        return available;
+    public String getDescription() {
+        return description;
     }
 
-    public DogSitter setAvailable(String available) {
-        this.available = available;
+    public DogSitter setDescription(String description) {
+        this.description = description;
         return this;
     }
 }

@@ -221,8 +221,39 @@
             android:textColor="@color/color_text"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextInputLayoutStyle"
+            app:boxStrokeColor="@color/color_text"
+            app:hintTextAppearance="@color/colorPrimary"
+            app:helperTextEnabled="true"
+            android:textColorHint="@color/color_text"
+            android:textSize="22sp"
+            android:layout_marginVertical="8dp"
+            >
 
-    <!--        ADD MAP -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dogSitterReg_IN_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:textColor="@color/color_text"
+                android:gravity="top"
+                android:lines="5"
+                android:inputType="textMultiLine"
+                android:hint="Description" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
+
+
+
     </LinearLayout>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/dogSitterReg_BTN_register"

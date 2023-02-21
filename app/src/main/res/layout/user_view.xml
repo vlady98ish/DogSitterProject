@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_margin="10dp"
+    card_view:cardElevation="0dp"
+    app:cardCornerRadius="20dp"
+    >
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,6 +26,7 @@
         android:scaleType="centerCrop"
         android:layout_marginBottom="8dp"
         app:riv_corner_radius="8dip"
+
         />
 
 
@@ -23,28 +34,36 @@
         android:id="@+id/user_view_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_person_update"
         android:text="Kate Frehin"
+        android:gravity="center"
         android:layout_below="@+id/user_view_IMG_photo"
         android:textColor="@color/color_text"
         android:textStyle="bold"
         android:textSize="14dp"
+
         />
 
     <TextView
         android:id="@+id/user_view_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:drawableStart="@drawable/ic_city_orange"
         android:text="Tel Aviv, Israel"
         android:layout_below="@+id/user_view_name"
         android:textColor="@color/color_text"
         android:textSize="14dp"
+
         />
 
     <TextView
         android:id="@+id/user_view_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Available: 08:00 - 16:00"
+        android:drawableStart="@drawable/ic_phone_orange"
+        android:gravity="center"
+        android:text="0505231212"
         android:layout_below="@+id/user_view_city"
 
         android:textColor="@color/color_text"
@@ -56,29 +75,38 @@
         android:id="@+id/user_view_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_salary_orange"
+        android:gravity="center"
         android:text="@string/salary"
         android:layout_below="@+id/user_view_time"
         android:textColor="@color/color_text"
         android:textSize="14dp"
+        android:layout_marginBottom="8dp"
         />
 
     <ImageButton
+
         android:id="@+id/user_view_BTN_fav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_favorite_border"
         android:layout_alignParentEnd="true"
         android:background="@color/fui_transparent"
+        android:layout_margin="8dp"
+
         />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/user_view_BTN_chat"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="26dp"
         android:layout_below="@+id/user_view_IMG_photo"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Call"
         android:layout_alignParentEnd="true"
+        android:gravity="center"
+
         android:background="@drawable/button_background"
         />
 
@@ -86,3 +114,4 @@
 
 
 </RelativeLayout>
+</androidx.cardview.widget.CardView>

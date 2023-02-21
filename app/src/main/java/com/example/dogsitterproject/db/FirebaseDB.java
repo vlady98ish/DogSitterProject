@@ -1,33 +1,53 @@
 package com.example.dogsitterproject.db;
 
+import static com.example.dogsitterproject.utils.ConstUtils.DOGSITTER_IMAGES;
 import static com.example.dogsitterproject.utils.ConstUtils.DOGS_DATA;
 
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
+import static com.example.dogsitterproject.utils.ConstUtils.EMAIL;
 import static com.example.dogsitterproject.utils.ConstUtils.FAVORITE_DATA;
 import static com.example.dogsitterproject.utils.ConstUtils.FAV_IN;
 
+import static com.example.dogsitterproject.utils.ConstUtils.FILE_NOT_SELECTED;
+import static com.example.dogsitterproject.utils.ConstUtils.FULL_NAME;
+import static com.example.dogsitterproject.utils.ConstUtils.IMAGES;
+import static com.example.dogsitterproject.utils.ConstUtils.NAME;
+import static com.example.dogsitterproject.utils.ConstUtils.PASSWORD;
+import static com.example.dogsitterproject.utils.ConstUtils.PHONE;
+import static com.example.dogsitterproject.utils.ConstUtils.PROFILE_PIC_URL;
+import static com.example.dogsitterproject.utils.ConstUtils.SITTER_IMAGES;
 import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
+import static com.example.dogsitterproject.utils.ConstUtils.UPLOAD_SUCCESS;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
+import static com.example.dogsitterproject.utils.ConstUtils.WEIGHT;
 
 
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
+
+import com.example.dogsitterproject.activity.FullDescriptionActivity;
 
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.DogSitter;
 
 
+import com.example.dogsitterproject.model.User;
+import com.example.dogsitterproject.utils.MySignal;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class FirebaseDB {
@@ -74,24 +94,49 @@ public class FirebaseDB {
                 ArrayList<DogSitter> dogSitters = new ArrayList<>();
                 ArrayList<Boolean> flags = new ArrayList<>();
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    if (child.child(TYPE).getValue().toString().equals(DOG_SITTER)) {
-                        DogSitter dogSitter = child.getValue(DogSitter.class);
-                        if (child.child(FAV_IN).child(userId).exists()) {
-                            dogSitters.add(dogSitter);
-                            flags.add(true);
-                        } else {
-                            dogSitters.add(dogSitter);
-                            flags.add(false);
-                        }
+                        if(child.child(TYPE).getValue() != null) {
+                            if (child.child(TYPE).getValue().toString().equals(DOG_SITTER)) {
+                                DogSitter dogSitter = child.getValue(DogSitter.class);
+                                if (child.child(FAV_IN).child(userId).exists()) {
+                                    dogSitters.add(dogSitter);
+                                    flags.add(true);
+                                } else {
+                                    dogSitters.add(dogSitter);
+                                    flags.add(false);
+                                }
 
+                            }
+                        }
                     }
-                }
+
                 if (callBack_data != null) callBack_data.dogSittersDataReady(dogSitters, flags);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+
+    public static void getPropertyImageList(FullDescriptionActivity.CallBack_Images callBack_images,String id) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference().child(USER_DATA).child(id).child(IMAGES);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<String> imageList = new ArrayList<>();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
+                    imageList.add(map.get(SITTER_IMAGES));
+                }
+                if (callBack_images != null) {
+                    callBack_images.imagesReady(imageList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
@@ -275,7 +320,7 @@ public class FirebaseDB {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child("type").getValue().equals(DOG_SITTER)) {
+                if (snapshot.child(TYPE).getValue().equals(DOG_SITTER)) {
                     getInfoDogSitter(snapshot, callBack_update);
                 } else {
                     getInfoDog(snapshot, callBack_update);
@@ -293,19 +338,19 @@ public class FirebaseDB {
     }
 
     private static void getInfoDogSitter(DataSnapshot snapshot, CallBack_Update callBack_update) {
-        String name = snapshot.child("fullName").getValue(String.class);
-        String email = snapshot.child("email").getValue(String.class);
-        String password = snapshot.child("password").getValue(String.class);
-        String phone = snapshot.child("phone").getValue(String.class);
-        String pictureUrl = snapshot.child("profilepictureurl").getValue(String.class);
+        String name = snapshot.child(FULL_NAME).getValue(String.class);
+        String email = snapshot.child(EMAIL).getValue(String.class);
+        String password = snapshot.child(PASSWORD).getValue(String.class);
+        String phone = snapshot.child(PHONE).getValue(String.class);
+        String pictureUrl = snapshot.child(PROFILE_PIC_URL).getValue(String.class);
         callBack_update.updateToStartDogSitter(name, email, password, phone, pictureUrl);
     }
 
     private static void getInfoDog(DataSnapshot snapshot, CallBack_Update callBack_update) {
-        String name = snapshot.child("fullName").getValue(String.class);
-        String email = snapshot.child("email").getValue(String.class);
-        String password = snapshot.child("password").getValue(String.class);
-        String phone = snapshot.child("phone").getValue(String.class);
+        String name = snapshot.child(FULL_NAME).getValue(String.class);
+        String email = snapshot.child(EMAIL).getValue(String.class);
+        String password = snapshot.child(PASSWORD).getValue(String.class);
+        String phone = snapshot.child(PHONE).getValue(String.class);
         DatabaseReference dogRef = FirebaseDatabase
                 .getInstance()
                 .getReference()
@@ -314,9 +359,9 @@ public class FirebaseDB {
         dogRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String pictureUrl = snapshot.child("dogpictureurl").getValue(String.class);
-                String dogName = snapshot.child("name").getValue(String.class);
-                String dogWeight = snapshot.child("weight").getValue(String.class);
+                String pictureUrl = snapshot.child(PROFILE_PIC_URL).getValue(String.class);
+                String dogName = snapshot.child(NAME).getValue(String.class);
+                String dogWeight = snapshot.child(WEIGHT).getValue(String.class);
                 callBack_update.updateToStartDog(name, email, password, phone, pictureUrl, dogName, dogWeight);
             }
 
@@ -336,10 +381,10 @@ public class FirebaseDB {
                 .getReference()
                 .child(USER_DATA)
                 .child(getCurrentId());
-        dsRef.child("fullName").setValue(name);
-        dsRef.child("email").setValue(email);
-        dsRef.child("password").setValue(password);
-        dsRef.child("phone").setValue(phone);
+        dsRef.child(FULL_NAME).setValue(name);
+        dsRef.child(EMAIL).setValue(email);
+        dsRef.child(PASSWORD).setValue(password);
+        dsRef.child(PHONE).setValue(phone);
     }
 
     public static void updateDogInfo(String dogName, String dogWeight) {
@@ -348,8 +393,8 @@ public class FirebaseDB {
                 .getReference()
                 .child(DOGS_DATA)
                 .child(getCurrentId());
-        dsRef.child("name").setValue(dogName);
-        dsRef.child("weight").setValue(dogWeight);
+        dsRef.child(NAME).setValue(dogName);
+        dsRef.child(WEIGHT).setValue(dogWeight);
     }
 
     public static void getType(CallBack_Type callBack_type){
@@ -374,6 +419,77 @@ public class FirebaseDB {
 
     public interface CallBack_Type{
         void getAll(String type);
+    }
+    public interface CallBack_GetInfo{
+        void setInfoUser(User User);
+        void setInfoDog(Dog dog);
+    }
+
+    public static void getInfo(CallBack_GetInfo callBack_getInfo){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference reference= db.getReference().child(USER_DATA).child(
+                FirebaseAuth.getInstance().getCurrentUser().getUid()
+        );
+        DatabaseReference dogRef = db.getReference(DOGS_DATA);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String type = snapshot.child(TYPE).getValue().toString();
+                if(type.equals(DOG_SITTER)){
+                    DogSitter dogSitter = snapshot.getValue(DogSitter.class);
+                    callBack_getInfo.setInfoUser(dogSitter);
+                }
+                else{
+                    User user = snapshot.getValue(User.class);
+                    callBack_getInfo.setInfoUser(user);
+                    dogRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Dog dog = snapshot.child(getCurrentId()).getValue(Dog.class);
+                            callBack_getInfo.setInfoDog(dog);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+
+    public static void saveImages(ArrayList<Uri> uriArrayList) {
+        if (uriArrayList != null) {
+            StorageReference ImageFolder = FirebaseStorage.getInstance().getReference().child(IMAGES);
+            for (int i = 0; i < uriArrayList.size(); i++) {
+                Uri currentImg = uriArrayList.get(i);
+                StorageReference imageName = ImageFolder.child("ImagesForId-" + FirebaseDB.getCurrentId()).child(String.valueOf(i));
+
+                imageName.putFile(currentImg).addOnSuccessListener(taskSnapshot ->
+                        imageName.getDownloadUrl().addOnSuccessListener(uri -> {
+                            String url = String.valueOf(uri);
+                            storeToUser(url);
+                        }));
+            }
+            MySignal.getInstance().toast(UPLOAD_SUCCESS);
+        } else {
+            MySignal.getInstance().toast(FILE_NOT_SELECTED);
+        }
+    }
+
+    private static void storeToUser(String url){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(USER_DATA).child(FirebaseDB.getCurrentId()).child(IMAGES);
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put(DOGSITTER_IMAGES, url);
+        databaseReference.push().setValue(hashMap);
     }
 
 

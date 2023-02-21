@@ -36,6 +36,7 @@ public class SignUpTypeChooseActivity extends AppCompatActivity {
             Intent intent = new Intent(SignUpTypeChooseActivity.this,
                     DogSitterRegistrationActivity.class);
             startActivity(intent);
+            finish();
         });
 
 
@@ -43,6 +44,7 @@ public class SignUpTypeChooseActivity extends AppCompatActivity {
             Intent intent = new Intent(SignUpTypeChooseActivity.this,
                     DogOwnerRegistrationActivity.class);
             startActivity(intent);
+            finish();
         });
 
 
@@ -50,6 +52,7 @@ public class SignUpTypeChooseActivity extends AppCompatActivity {
             Intent intent = new Intent(SignUpTypeChooseActivity.this,
                     AutintificateActivity.class);
             startActivity(intent);
+            finish();
         });
 
 

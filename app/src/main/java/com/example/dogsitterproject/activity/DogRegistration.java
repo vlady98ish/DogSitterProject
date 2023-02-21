@@ -5,12 +5,13 @@ import static com.example.dogsitterproject.utils.ConstUtils.DOGS_DATA;
 
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_IMAGES;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
-import static com.example.dogsitterproject.utils.ConstUtils.DOG_PIC_URL;
+
 
 import static com.example.dogsitterproject.utils.ConstUtils.IMAGE;
 import static com.example.dogsitterproject.utils.ConstUtils.IMG_FAILED;
 import static com.example.dogsitterproject.utils.ConstUtils.IMG_UPLOADED;
 import static com.example.dogsitterproject.utils.ConstUtils.PICK_IMAGE_REQUEST;
+
 import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
 import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
 
@@ -22,8 +23,9 @@ import static com.example.dogsitterproject.utils.ConstUtils.PASSWORD_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.REGISTERING_LOADER;
 import static com.example.dogsitterproject.utils.ConstUtils.SALARY_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.SELECT_PICTURE;
+import static com.example.dogsitterproject.utils.ConstUtils.USER_NOT_EXIST;
 
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,15 +40,14 @@ import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Toast;
+
 
 import com.example.dogsitterproject.R;
 import com.example.dogsitterproject.db.FirebaseRegistration;
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.User;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.dogsitterproject.utils.MySignal;
 
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -56,13 +57,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 
 import java.util.HashMap;
-import java.util.Map;
+
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -174,7 +172,6 @@ public class DogRegistration extends AppCompatActivity {
                 .requireNonNull(weight.getText()).toString().trim();
 
 
-        //TODO: Please check for valid email
         if (TextUtils.isEmpty(nameEdited)) {
             name.setError(EMAIL_REQUIRED);
             name.requestFocus();
@@ -223,59 +220,30 @@ public class DogRegistration extends AppCompatActivity {
     }
 
     private void saveImage(Uri resultUri, String currentUserId) {
-        final StorageReference imageRef = storage.getReference().child(DOG_IMAGES).child(currentUserId);
-        if (resultUri != null) {
-            imageRef.putFile(resultUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    String downloadUrl = uri.toString();
-                                    Map newImageMap = new HashMap();
-                                    newImageMap.put(DOG_PIC_URL, downloadUrl);
-                                    dogReference.child(currentUserId).updateChildren(newImageMap);
+        FirebaseRegistration.CallBack_saveImage callBack_save = new FirebaseRegistration.CallBack_saveImage() {
+            @Override
+            public void changeIntent() {
+                MySignal.getInstance().toast(IMG_UPLOADED);
+                Intent intent = new Intent(DogRegistration.this, MainActivity.class);
+                startActivity(intent);
+                loader.dismiss();
+                finish();
+            }
 
-                                    Toast
-                                            .makeText(
-                                                    DogRegistration.this,
-                                                    IMG_UPLOADED,
-                                                    Toast.LENGTH_SHORT)
-                                            .show();
+            @Override
+            public void fail() {
+                loader.dismiss();
+                MySignal.getInstance().toast(IMG_FAILED);
+            }
 
-                                    Intent intent = new Intent(DogRegistration.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                    loader.dismiss();
-                                }
-                            });
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            loader.dismiss();
-                            Toast
-                                    .makeText(
-                                            DogRegistration.this,
-                                            IMG_FAILED,
-                                            Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            double progressPercent =
-                                    (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                            loader.setMessage("Progress:" + (int) progressPercent + "%");
-                        }
-                    });
-        }
-
-
+            @Override
+            public void loading(long byteTransferred, long totalByteCount) {
+                double progressPercent =
+                        (100.00 * byteTransferred / totalByteCount);
+                loader.setMessage("Progress:" + (int) progressPercent + "%");
+            }
+        };
+        FirebaseRegistration.saveImage(resultUri, DOGS_DATA, DOG_IMAGES, currentUserId, callBack_save);
     }
 
 
@@ -288,10 +256,7 @@ public class DogRegistration extends AppCompatActivity {
                     String currentUserId = mAuth.getCurrentUser().getUid();
                     user.setId(currentUserId);
                     if (!task.isSuccessful()) {
-                        String error = task.getException().toString();
-                        //TODO: Toast to class
-                        Toast.makeText(DogRegistration.this, "Error"
-                                + error, Toast.LENGTH_SHORT).show();
+                        MySignal.getInstance().toast(USER_NOT_EXIST);
                     } else {
 
 
@@ -307,9 +272,14 @@ public class DogRegistration extends AppCompatActivity {
                                 weightEdited, "",
                                 user.getPhone());
 
+                        FirebaseRegistration.CallBack_saveData callBack_saveData = new FirebaseRegistration.CallBack_saveData() {
+                            @Override
+                            public void continueLoading() {
+                                saveImage(resultUri, currentUserId);
+                            }
+                        };
+                        FirebaseRegistration.saveData(user, newTypeMap, dog,callBack_saveData);
 
-                        FirebaseRegistration.saveData(user, newTypeMap, dog, DogRegistration.this);
-                        saveImage(resultUri, currentUserId);
 
                     }
                 });

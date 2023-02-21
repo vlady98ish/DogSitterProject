@@ -1,18 +1,22 @@
 package com.example.dogsitterproject.activity;
 
 import static com.example.dogsitterproject.utils.ConstUtils.EMAIL_REQUIRED;
+import static com.example.dogsitterproject.utils.ConstUtils.EMAIL_TO_LINK;
+import static com.example.dogsitterproject.utils.ConstUtils.ERROR_NOT_SENT;
+import static com.example.dogsitterproject.utils.ConstUtils.LINK_TO_EMAIL;
 import static com.example.dogsitterproject.utils.ConstUtils.LOG_PROGRESS;
 import static com.example.dogsitterproject.utils.ConstUtils.LOG_SUCCESS;
 import static com.example.dogsitterproject.utils.ConstUtils.PASSWORD_REQUIRED;
+import static com.example.dogsitterproject.utils.ConstUtils.RESET_PASSWORD;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,12 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dogsitterproject.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.example.dogsitterproject.utils.MySignal;
+
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -119,67 +120,37 @@ public class AutintificateActivity extends AppCompatActivity {
     private void login(String email, String password) {
         mAuth
                 .signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(AutintificateActivity.this,
-                                            LOG_SUCCESS,
-                                            Toast.LENGTH_SHORT)
-                                    .show();
-                            Intent intent = new Intent(AutintificateActivity.this,
-                                    MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(AutintificateActivity.this,
-                                            task.getException().toString(),
-                                            Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                        loader.dismiss();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        MySignal.getInstance().toast(LOG_SUCCESS);
+                        Intent intent = new Intent(AutintificateActivity.this,
+                                MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        MySignal.getInstance().toast(task.getException().toString());
                     }
+                    loader.dismiss();
                 });
     }
 
     private void resetPassword(View v) {
         EditText resetMail = new EditText(v.getContext());
         AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
-        passwordResetDialog.setTitle("Reset Password?");
-        passwordResetDialog.setMessage("Enter Your Email To Received Reset Link.");
+        passwordResetDialog.setTitle(RESET_PASSWORD);
+        passwordResetDialog.setMessage(EMAIL_TO_LINK);
         passwordResetDialog.setView(resetMail);
 
-        passwordResetDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String mail = resetMail.getText().toString();
-                mAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(AutintificateActivity.this,
-                                        "Reset Link To Your Email.",
-                                        Toast.LENGTH_SHORT)
-                                .show();
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AutintificateActivity.this,
-                                        "Error ! Reset Link is Not Sent",
-                                        Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                });
-            }
+        passwordResetDialog.setPositiveButton("Yes", (dialog, which) -> {
+            String mail = resetMail.getText().toString();
+            mAuth.sendPasswordResetEmail(mail)
+                    .addOnSuccessListener(unused -> MySignal.getInstance().toast(LINK_TO_EMAIL))
+                    .addOnFailureListener(e -> MySignal.getInstance().toast(ERROR_NOT_SENT));
         });
 
 
-        passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        passwordResetDialog.setNegativeButton("No", (dialog, which) -> {
 
-            }
         });
         passwordResetDialog.create().show();
     }

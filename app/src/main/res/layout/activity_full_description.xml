@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="32dp">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+        android:id="@+id/description_carouselView_fullCard"
+        android:layout_width="match_parent"
+        android:layout_height="373dp"
+        android:layout_weight="4"
+        app:showBottomShadow="false"
+        app:showNavigationButtons="false"
+        app:showTopShadow="false"
+        android:layout_marginBottom="16dp"
+        app:imageScaleType="centerCrop"
+        />
+
+
+    <TextView
+        android:id="@+id/description_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description_carouselView_fullCard"
+        android:drawableStart="@drawable/ic_person_update"
+        android:gravity="center"
+        android:text="Kate Frehin"
+        android:textColor="@color/color_text"
+        android:textSize="14dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/description_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description_name"
+        android:drawableStart="@drawable/ic_city_orange"
+        android:gravity="center"
+        android:text="Tel Aviv, Israel"
+        android:textColor="@color/color_text"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/description_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description_city"
+        android:drawableStart="@drawable/ic_phone_orange"
+        android:gravity="center"
+        android:text="0525361212"
+
+        android:textColor="@color/color_text"
+        android:textSize="14dp"
+
+        />
+
+    <TextView
+        android:id="@+id/description_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description_phone"
+        android:drawableStart="@drawable/ic_salary_orange"
+        android:gravity="center"
+        android:paddingBottom="32dp"
+        android:text="@string/salary"
+        android:textColor="@color/color_text"
+        android:textSize="14dp" />
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/description_BTN_chat"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description_carouselView_fullCard"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="22dp"
+        android:textColor="@color/white"
+        android:background="@drawable/button_background"
+        android:text="Call" />
+
+
+    <TextView
+        android:id="@+id/description_LBL_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description_price"
+        android:text="About DogSitter"
+        android:textStyle="bold"
+        android:textColor="@color/color_text"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/description_LBL_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description_LBL_about"
+        android:textColor="@color/color_text"
+        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." />
+
+    </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

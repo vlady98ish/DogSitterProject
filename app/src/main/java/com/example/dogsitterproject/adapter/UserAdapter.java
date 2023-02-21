@@ -6,12 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.net.Uri;
 
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dogsitterproject.R;
 import com.example.dogsitterproject.calback.CallBack_AddToFav;
 import com.example.dogsitterproject.calback.CallBack_RemoveFromFav;
+import com.example.dogsitterproject.calback.OnClickItemRecycleView;
 import com.example.dogsitterproject.model.DogSitter;
 
 
@@ -45,6 +42,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private List<Boolean> favList;
     private CallBack_AddToFav callBack_addToFav;
     private CallBack_RemoveFromFav callBackRemoveFromFav;
+    private OnClickItemRecycleView onClickItemRecycleView;
+
 
     private boolean fav = false;
 
@@ -73,7 +72,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         return this;
     }
 
-
+    public UserAdapter setOnClickItemRecycleView(OnClickItemRecycleView onClickItemRecycleView) {
+        this.onClickItemRecycleView = onClickItemRecycleView;
+        return this;
+    }
 
     @NonNull
     @Override
@@ -129,7 +131,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         private boolean flag;
 
 
-        public int PERMISSION_CODE = 100;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -173,6 +175,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                     context.startActivity(intent);
                 }
             });
+            itemView.setOnClickListener(v -> onClickItemRecycleView.onClickItem(getItem(getAdapterPosition())));
         }
 
 

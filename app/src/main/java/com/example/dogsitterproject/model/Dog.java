@@ -7,7 +7,7 @@ public class Dog {
     private String age;
     private String breed;
     private String weight;
-    private String dogpictureurl;
+    private String profilepictureurl;
     private String phone;
     private String idUser;
 
@@ -15,13 +15,13 @@ public class Dog {
     public Dog() {
     }
 
-    public Dog(String name, String idUser, String gender, String age, String breed, String weight, String dogpictureurl, String phone) {
+    public Dog(String name, String idUser, String gender, String age, String breed, String weight, String profilepictureurl, String phone) {
         this.name = name;
         this.gender = gender;
         this.age = age;
         this.breed = breed;
         this.weight = weight;
-        this.dogpictureurl = dogpictureurl;
+        this.profilepictureurl = profilepictureurl;
         this.phone = phone;
         this.idUser = idUser;
     }
@@ -90,12 +90,12 @@ public class Dog {
         return this;
     }
 
-    public String getDogpictureurl() {
-        return dogpictureurl;
+    public String getProfilepictureurl() {
+        return profilepictureurl;
     }
 
-    public Dog setDogpictureurl(String dogpictureurl) {
-        this.dogpictureurl = dogpictureurl;
+    public Dog setProfilepictureurl(String profilepictureurl) {
+        this.profilepictureurl = profilepictureurl;
         return this;
     }
 }

@@ -104,7 +104,6 @@ public class DogOwnerRegistrationActivity extends AppCompatActivity {
                 .requireNonNull(phone.getText()).toString().trim();
 
 
-        //TODO: Please check for valid email
         if (TextUtils.isEmpty(emailEdited)) {
             email.setError(EMAIL_REQUIRED);
             email.requestFocus();
@@ -149,5 +148,6 @@ public class DogOwnerRegistrationActivity extends AppCompatActivity {
         Intent intent = new Intent(DogOwnerRegistrationActivity.this, DogRegistration.class);
         intent.putExtra(KEY_USER, user);
         startActivity(intent);
+        finish();
     }
 }

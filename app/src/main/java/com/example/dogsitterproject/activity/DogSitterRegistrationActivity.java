@@ -1,6 +1,7 @@
 package com.example.dogsitterproject.activity;
 
 
+import static com.example.dogsitterproject.utils.ConstUtils.DESCRIPTION_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
 import static com.example.dogsitterproject.utils.ConstUtils.IMAGE;
 import static com.example.dogsitterproject.utils.ConstUtils.IMAGE_REQUIRED;
@@ -9,10 +10,7 @@ import static com.example.dogsitterproject.utils.ConstUtils.IMG_UPLOADED;
 
 import static com.example.dogsitterproject.utils.ConstUtils.PICK_IMAGE_REQUEST;
 import static com.example.dogsitterproject.utils.ConstUtils.PROFILE_IMAGES;
-import static com.example.dogsitterproject.utils.ConstUtils.PROFILE_PIC_URL;
 import static com.example.dogsitterproject.utils.ConstUtils.TYPE;
-import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
-import static com.example.dogsitterproject.utils.ConstUtils.USER_SET_SUCCESSFULLY;
 import static com.example.dogsitterproject.utils.ConstUtils.EMAIL_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.FULL_NAME_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.ID_REQUIRED;
@@ -22,8 +20,9 @@ import static com.example.dogsitterproject.utils.ConstUtils.PHONE_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.REGISTERING_LOADER;
 import static com.example.dogsitterproject.utils.ConstUtils.SALARY_REQUIRED;
 import static com.example.dogsitterproject.utils.ConstUtils.SELECT_PICTURE;
+import static com.example.dogsitterproject.utils.ConstUtils.USER_DATA;
+import static com.example.dogsitterproject.utils.ConstUtils.USER_NOT_EXIST;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,31 +42,22 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.dogsitterproject.R;
 import com.example.dogsitterproject.db.FirebaseRegistration;
 import com.example.dogsitterproject.model.DogSitter;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.dogsitterproject.utils.MySignal;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
+
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+
 
 
 import java.util.HashMap;
-import java.util.Map;
+
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -84,6 +74,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
     private TextInputEditText email;
     private TextInputEditText password;
     private TextInputEditText salary;
+    private TextInputEditText description;
     private Button regButton;
 
 
@@ -92,7 +83,6 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
     private ProgressDialog loader;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference databaseReference;
 
 
     @Override
@@ -117,6 +107,7 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
         password = findViewById(R.id.dogSitterReg_IN_password);
         regButton = findViewById(R.id.dogSitterReg_BTN_register);
         salary = findViewById(R.id.dogSitterReg_IN_salary);
+        description = findViewById(R.id.dogSitterReg_IN_description);
         loader = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
         fillAdapters();
@@ -160,9 +151,10 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
                 .requireNonNull(phone.getText()).toString().trim();
         String salaryEdited = Objects
                 .requireNonNull(salary.getText()).toString().trim();
+        String descriptionEdited = Objects
+                .requireNonNull(description.getText()).toString().trim();
 
 
-        //TODO: Please check for valid email
         if (TextUtils.isEmpty(emailEdited)) {
             email.setError(EMAIL_REQUIRED);
             email.requestFocus();
@@ -199,67 +191,46 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
             city.requestFocus();
 
         }
+        if (TextUtils.isEmpty(descriptionEdited)) {
+            description.setError(DESCRIPTION_REQUIRED);
+            description.requestFocus();
+        }
         if (resultUri == null) {
-            Toast.makeText(this, IMAGE_REQUIRED, Toast.LENGTH_SHORT).show();
+            MySignal.getInstance().toast(IMAGE_REQUIRED);
         } else {
             loader.setMessage(REGISTERING_LOADER);
             loader.setCanceledOnTouchOutside(false);
             loader.show();
 
-            saveData(fullNameEdited, cityEdited, emailEdited, phoneEdited, passEdited, salaryEdited);
+            saveData(fullNameEdited, cityEdited, emailEdited, phoneEdited, passEdited, salaryEdited,descriptionEdited);
         }
     }
 
     private void saveImage(Uri resultUri, String currentUserId) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(PROFILE_IMAGES).child(currentUserId);
-        if (resultUri != null) {
-            storageReference.putFile(resultUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    String downloadUrl = uri.toString();
-                                    Map newImageMap = new HashMap();
-                                    newImageMap.put(PROFILE_PIC_URL, downloadUrl);
-                                    databaseReference.updateChildren(newImageMap);
+        FirebaseRegistration.CallBack_saveImage callBack_save = new FirebaseRegistration.CallBack_saveImage() {
+            @Override
+            public void changeIntent() {
+                MySignal.getInstance().toast(IMG_UPLOADED);
+                Intent intent = new Intent(DogSitterRegistrationActivity.this, MainActivity.class);
+                startActivity(intent);
+                loader.dismiss();
+                finish();
+            }
 
-                                    Toast
-                                            .makeText(
-                                                    DogSitterRegistrationActivity.this,
-                                                    IMG_UPLOADED,
-                                                    Toast.LENGTH_SHORT)
-                                            .show();
-                                    Intent intent = new Intent(DogSitterRegistrationActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    loader.dismiss();
-                                    finish();
-                                }
-                            });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            loader.dismiss();
-                            Toast
-                                    .makeText(
-                                            DogSitterRegistrationActivity.this,
-                                            IMG_FAILED,
-                                            Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            double progressPercent =
-                                    (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                            loader.setMessage("Progress:" + (int) progressPercent + "%");
-                        }
-                    });
-        }
+            @Override
+            public void fail() {
+                loader.dismiss();
+                MySignal.getInstance().toast(IMG_FAILED);
+            }
+
+            @Override
+            public void loading(long byteTransferred, long totalByteCount) {
+                double progressPercent =
+                        (100.00 * byteTransferred / totalByteCount);
+                loader.setMessage("Progress:" + (int) progressPercent + "%");
+            }
+        };
+        FirebaseRegistration.saveImage(resultUri,USER_DATA,PROFILE_IMAGES, currentUserId, callBack_save);
     }
 
     private void getImage() {
@@ -274,43 +245,39 @@ public class DogSitterRegistrationActivity extends AppCompatActivity {
                           String emailEdited,
                           String phoneEdited,
                           String passEdited,
-                          String salaryEdited) {
+                          String salaryEdited,
+                          String descriptionEdited) {
+
+
 
         mAuth
                 .createUserWithEmailAndPassword(emailEdited, passEdited)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
 
-                        //Check if the user was registered
-                        if (!task.isSuccessful()) {
-                            String error = task.getException().toString();
-                            //TODO: Toast to class
-                            Toast.makeText(DogSitterRegistrationActivity.this, "Error"
-                                    + error, Toast.LENGTH_SHORT).show();
-                        } else {
-                            String currentUserId = mAuth.getCurrentUser().getUid();
-                            databaseReference = FirebaseDatabase
-                                    .getInstance()
-                                    .getReference()
-                                    .child(USER_DATA)
-                                    .child(currentUserId);
+                        MySignal.getInstance().toast(USER_NOT_EXIST);
+                    } else {
+                        String currentUserId = mAuth.getCurrentUser().getUid();
+                        HashMap<String, Object> newTypeMap = new HashMap<>();
+                        newTypeMap.put(TYPE, DOG_SITTER);
+                        DogSitter user = new DogSitter(fullNameEdited,
+                                currentUserId,
+                                cityEdited,
+                                emailEdited,
+                                phoneEdited,
+                                passEdited,
+                                salaryEdited,
+                                "",descriptionEdited);
+                        FirebaseRegistration.CallBack_saveData callBack_saveData = new FirebaseRegistration.CallBack_saveData() {
+                            @Override
+                            public void continueLoading() {
+                                saveImage(resultUri, currentUserId);
+                            }
+                        };
+                        FirebaseRegistration.saveDogSitter(user, newTypeMap,callBack_saveData);
 
-                            HashMap<String,Object>newTypeMap = new HashMap<>();
-                            newTypeMap.put(TYPE, DOG_SITTER);
-                            DogSitter user = new DogSitter(fullNameEdited,
-                                    currentUserId,
-                                    cityEdited,
-                                    emailEdited,
-                                    phoneEdited,
-                                    passEdited,
-                                    salaryEdited,
-                                    "8:00-16:00", "");
 
-                            FirebaseRegistration.saveDogSitter(user,newTypeMap,DogSitterRegistrationActivity.this);
 
-                            saveImage(resultUri, currentUserId);
-                        }
                     }
                 });
     }

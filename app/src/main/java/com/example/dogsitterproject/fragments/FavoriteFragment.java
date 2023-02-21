@@ -3,11 +3,14 @@ package com.example.dogsitterproject.fragments;
 
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_OWNER;
 import static com.example.dogsitterproject.utils.ConstUtils.DOG_SITTER;
+import static com.example.dogsitterproject.utils.ConstUtils.KEY_USER;
 import static com.example.dogsitterproject.utils.ConstUtils.NO_DOGS;
 import static com.example.dogsitterproject.utils.ConstUtils.NO_DOG_SITTERS;
+import static com.example.dogsitterproject.utils.ConstUtils.UPLOAD_DATA;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +26,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogsitterproject.R;
+import com.example.dogsitterproject.activity.FullDescriptionActivity;
 import com.example.dogsitterproject.adapter.DogAdapter;
 import com.example.dogsitterproject.adapter.UserAdapter;
 import com.example.dogsitterproject.calback.CallBack_RemoveFromFav;
+import com.example.dogsitterproject.calback.OnClickItemRecycleView;
 import com.example.dogsitterproject.model.Dog;
 import com.example.dogsitterproject.model.DogSitter;
 import com.example.dogsitterproject.db.FirebaseDB;
@@ -52,7 +57,7 @@ public class FavoriteFragment extends Fragment {
 
     private void initViews() {
         loader = new ProgressDialog(getContext());
-        loader.setMessage("Uploading data...");
+        loader.setMessage(UPLOAD_DATA);
         loader.setCanceledOnTouchOutside(false);
         loader.show();
         FirebaseDB.CallBack_FavData callBack_favData = new FirebaseDB.CallBack_FavData() {
@@ -77,6 +82,7 @@ public class FavoriteFragment extends Fragment {
             public void dogSittersDataReady(ArrayList<DogSitter> dogSitters) {
                 UserAdapter dogSitterAdapter = new UserAdapter(getActivity(), dogSitters, true);
                 dogSitterAdapter.setCallBackRemoveFromFav(removeFromFav);
+                dogSitterAdapter.setOnClickItemRecycleView(onClickItemRecycleView);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
 
                 if (dogSitters.isEmpty()) {
@@ -110,15 +116,12 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void triggerFB(FirebaseDB.CallBack_FavData callBack_favData) {
-        FirebaseDB.CallBack_Type callBack_type = new FirebaseDB.CallBack_Type() {
-            @Override
-            public void getAll(String type) {
-                if(type.equals(DOG_SITTER)){
-                    FirebaseDB.getFavDogs(callBack_favData);
-                }
-                else if(type.equals(DOG_OWNER)){
-                    FirebaseDB.getFavDogSitters(callBack_favData);
-                }
+        FirebaseDB.CallBack_Type callBack_type = type -> {
+            if(type.equals(DOG_SITTER)){
+                FirebaseDB.getFavDogs(callBack_favData);
+            }
+            else if(type.equals(DOG_OWNER)){
+                FirebaseDB.getFavDogSitters(callBack_favData);
             }
         };
 
@@ -137,4 +140,13 @@ public class FavoriteFragment extends Fragment {
             FirebaseDB.removeFromFavDogSitter(dogSitter);
         }
     };
+
+
+    OnClickItemRecycleView onClickItemRecycleView = dogSitter -> {
+        Intent intent = new Intent(getActivity(), FullDescriptionActivity.class);
+        intent.putExtra(KEY_USER, dogSitter);
+        startActivity(intent);
+    };
+
+
 }
