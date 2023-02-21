@@ -27,7 +27,7 @@
 <a href="https://www.youtube.com/watch?v=o-VD-irsiEc">Forgot Password </a><br>
 
 
-
+## Screenshots
 
 <div align="center">
   <img src="https://github.com/vlady98ish/DogSitterProject/blob/master/Screenshot/Screenshot_20230221-205858.jpg" width="230px" />  
