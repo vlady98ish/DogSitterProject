@@ -15,6 +15,8 @@
 
 ## Features
 * Auntification and Registration with Firebase
+* Firebase RealTime DB to store all the data.
+* Firebase Storage to store all images.
 * Forgot Password
 * Image Carousel
 * Favourite List
