@@ -29,12 +29,12 @@
 * Built with Modern Android Development practices
 * Implements Fragments and CallBacks.
 
-##Videos of Application
+## Videos of Application
 
-<a href="https://www.youtube.com/shorts/bibeTdjRiAI">DogSitterRegistration</a>
-<a href="https://www.youtube.com/shorts/8EVafsu2VFU">Call And Favourite List</a>
-<a href="https://www.youtube.com/shorts/YkPVeUUVn9U">Contact Us</a>
-<a href="https://www.youtube.com/shorts/EXbF0osBjH8">Upload Profile and Images</a>
-<a href="https://www.youtube.com/watch?v=KSkfRk9WxJs">Dog Registration and Description</a>
-<a href="https://www.youtube.com/shorts/8tHGlIe-_Uw">OnClick + Upload Dog Info + Favourite </a>
-<a href="https://www.youtube.com/watch?v=o-VD-irsiEc">Forgot Password </a>
+<a href="https://www.youtube.com/shorts/bibeTdjRiAI">DogSitterRegistration</a><br>
+<a href="https://www.youtube.com/shorts/8EVafsu2VFU">Call And Favourite List</a><br>
+<a href="https://www.youtube.com/shorts/YkPVeUUVn9U">Contact Us</a><br>
+<a href="https://www.youtube.com/shorts/EXbF0osBjH8">Upload Profile and Images</a><br>
+<a href="https://www.youtube.com/watch?v=KSkfRk9WxJs">Dog Registration and Description</a><br>
+<a href="https://www.youtube.com/shorts/8tHGlIe-_Uw">OnClick + Upload Dog Info + Favourite </a><br>
+<a href="https://www.youtube.com/watch?v=o-VD-irsiEc">Forgot Password </a><br>
